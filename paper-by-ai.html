@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personalized Mock Interview System</title>
+    <link rel="stylesheet" href="css/paper.css">
+    <style>
+        /* Specific enhancements for Paper by AI */
+        .ai-badge-hero {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: #ffffff;
+            padding: 24px 28px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .ai-badge-hero h2 {
+            font-size: 1.45rem;
+            margin-bottom: 4px;
+        }
+        .ai-badge-hero p {
+            color: #e0f2fe;
+            font-size: 0.9rem;
+        }
+        .ai-chip-pill {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .weak-select-box {
+            background: #ffffff;
+            border: 1.5px solid #fecaca;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .weak-select-box h3 {
+            color: #b91c1c;
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+        }
+        .weak-select-box p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+        .weak-checkbox-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .weak-select-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fef2f2;
+            border: 1.5px solid #fca5a5;
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #991b1b;
+        }
+        .weak-select-item input[type="checkbox"] {
+            accent-color: #ef4444;
+            transform: scale(1.1);
+        }
+        .btn-generate-ai {
+            background: linear-gradient(135deg, #2563eb, #0284c7);
+            color: #ffffff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .btn-generate-ai:hover {
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .ai-paper-sheet {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- 3-MENU SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">⚡</span>
+                <span class="brand-name">Mock<strong>AI</strong></span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <span class="menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="generate-paper.html" class="menu-item">
+                    <span class="menu-icon">📄</span>
+                    <span>Generate Paper</span>
+                </a>
+                <a href="paper-by-ai.html" class="menu-item active">
+                    <span class="menu-icon">🤖</span>
+                    <span>Paper by AI</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar" id="sideAvatar">S</div>
+                <div class="user-details">
+                    <strong id="sideUserName">Student</strong>
+                    <small>Candidate Portal</small>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN AI REMEDY WORKSPACE -->
+        <main class="main-content">
+            
+            <header class="topbar">
+                <div>
+                    <h1>Paper by AI — Weak Topic Adaptive Engine</h1>
+                    <p>Remediate specific concepts where your exam accuracy dropped below passing threshold</p>
+                </div>
+                <div class="topbar-actions">
+                    <a href="generate-paper.html" class="btn-secondary-link">&larr; Standard Exam Generator</a>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+                <!-- AI Hero Banner -->
+                <div class="ai-badge-hero">
+                    <div>
+                        <h2>Targeted Diagnostic Exam Generator</h2>
+                        <p>Automatically populated with weak points detected from your previous exam submissions.</p>
+                    </div>
+                    <span class="ai-chip-pill">AI Remedial Mode</span>
+                </div>
+
+                <!-- SELECT FROM WEAK TOPICS -->
+                <div class="weak-select-box" id="weakSelectionBox">
+                    <h3>Select From Your Detected Weak Areas:</h3>
+                    <p>Check the weak points you want to target in this customized remedial test session:</p>
+
+                    <div class="weak-checkbox-list" id="weakCheckboxesList">
+                        <!-- Populated dynamically from localStorage prepAiWeakTopics -->
+                    </div>
+
+                    <!-- Question Count Selection (Numbers only + Custom up to 100) -->
+                    <div class="field" style="margin-bottom: 20px;">
+                        <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:8px;">
+                            Number of Questions:
+                        </label>
+                        <div class="q-count-chips" style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiQCount" value="5" checked onchange="toggleAiCustomCount(false)">
+                                <span>5</span>
+                            </label>
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiQCount" value="10" onchange="toggleAiCustomCount(false)">
+                                <span>10</span>
+                            </label>
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiQCount" value="15" onchange="toggleAiCustomCount(false)">
+                                <span>15</span>
+                            </label>
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiQCount" value="20" onchange="toggleAiCustomCount(false)">
+                                <span>20</span>
+                            </label>
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiQCount" value="custom" id="radioAiCustomCount" onchange="toggleAiCustomCount(true)">
+                                <span>Custom</span>
+                            </label>
+                        </div>
+
+                        <!-- Custom Count Box -->
+                        <div class="custom-count-wrapper hidden" id="aiCustomCountBox" style="margin-top: 10px;">
+                            <label style="font-size:0.8rem; font-weight:600; color:#475569; display:block; margin-bottom:4px;">
+                                Enter Custom Number of Questions (1 - 100):
+                            </label>
+                            <div style="display:flex; gap:10px; align-items:center; max-width:260px;">
+                                <input type="number" id="aiCustomCountVal" min="1" max="100" value="8" 
+                                       class="form-control" style="font-weight:700; color:#2563eb;">
+                                <span style="font-size:0.85rem; color:#64748b;">Questions</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exam Duration / Time Limit Selection -->
+                    <div class="field" style="margin-bottom: 24px;">
+                        <label style="font-size:0.85rem; font-weight:700; color:#334155; display:block; margin-bottom:8px;">
+                            ⏱️ Exam Duration / Time Limit:
+                        </label>
+                        <div class="q-count-chips" style="display:flex; gap:10px; flex-wrap:wrap;">
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiDuration" value="5" onchange="toggleAiCustomTime(false)">
+                                <span>5 Mins</span>
+                            </label>
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiDuration" value="10" checked onchange="toggleAiCustomTime(false)">
+                                <span>10 Mins</span>
+                            </label>
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiDuration" value="15" onchange="toggleAiCustomTime(false)">
+                                <span>15 Mins</span>
+                            </label>
+                            <label class="count-chip" style="flex:1; display:flex; align-items:center; gap:8px; border:1.5px solid var(--border-color); padding:8px 12px; border-radius:8px; cursor:pointer;">
+                                <input type="radio" name="aiDuration" value="custom" id="radioAiCustomTime" onchange="toggleAiCustomTime(true)">
+                                <span>Custom Time ⏳</span>
+                            </label>
+                        </div>
+
+                        <!-- Custom Time Box with Seconds / Minutes -->
+                        <div class="custom-time-wrapper hidden" id="aiCustomTimeBox" style="margin-top: 10px;">
+                            <label style="font-size:0.8rem; font-weight:600; color:#475569; display:block; margin-bottom:4px;">
+                                Enter Custom Duration:
+                            </label>
+                            <div style="display:flex; gap:10px; align-items:center; max-width:340px;">
+                                <input type="number" id="aiCustomTimeVal" min="1" max="3600" value="45" 
+                                       class="form-control" style="font-weight:700; color:#0284c7; flex:1;">
+                                <select id="aiCustomTimeUnit" class="form-control" style="width:120px; font-weight:600;">
+                                    <option value="seconds">Seconds ⏱️</option>
+                                    <option value="minutes">Minutes ⌛</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-generate-ai" onclick="generateAiRemedyPaper()">
+                        🤖 Generate Adaptive Paper by AI
+                    </button>
+                </div>
+
+                <!-- AI GENERATED REMEDY PAPER VIEW -->
+                <div class="ai-paper-sheet hidden" id="aiPaperView">
+                    
+                    <div class="exam-banner" style="background: linear-gradient(135deg, #1e293b, #0f172a);">
+                        <div>
+                            <span class="exam-tag" style="background:#0284c7;">AI Targeted Paper</span>
+                            <h2 id="aiPaperTitle">Adaptive Remedial Test</h2>
+                            <p id="aiPaperMeta">Targeting flagged weak topics • Single Choice</p>
+                        </div>
+                        <div class="exam-timer-box">
+                            <span class="timer-label">Focus Session</span>
+                            <span class="timer-countdown" id="aiTimer">08:00</span>
+                        </div>
+                    </div>
+
+                    <form id="aiExamForm" onsubmit="evaluateAiPaper(event)">
+                        <div class="mcq-deck" id="aiMcqDeck">
+                            <!-- Injected by script -->
+                        </div>
+
+                        <div class="exam-submit-bar">
+                            <button type="button" class="btn-cancel-exam" onclick="cancelAiPaper()">Back to Topic Selection</button>
+                            <button type="submit" class="btn-evaluate">
+                                🏁 Submit AI Evaluation
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <!-- AI RESULT SUMMARY -->
+                <div class="result-card hidden" id="aiResultCard">
+                    <div class="result-header">
+                        <div class="score-circle" id="aiScoreCircle">100%</div>
+                        <div class="result-text">
+                            <h2>Remedy Paper Completed!</h2>
+                            <p id="aiResultSub">Great job targeting your weak points.</p>
+                        </div>
+                    </div>
+
+                    <p style="font-size:0.92rem; color:#334155; margin-bottom:20px;">
+                        The concepts you answered correctly in this paper have shown marked improvement.
+                    </p>
+
+                    <div class="result-actions">
+                        <a href="dashboard.html" class="btn-res btn-home">Return to Dashboard</a>
+                        <button type="button" class="btn-res btn-ai-remedy" onclick="resetAiSelection()">
+                            Practice Another Weak Topic &rarr;
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Dedicated Script for Paper by AI
+        var activeAiQuestions = [];
+        var aiTimerInterval = null;
+
+        // Specialized deep-dive questions for weak topics
+        var weakTopicQuestionBank = {
+            "React Virtual DOM": [
+                {
+                    topic: "React Virtual DOM",
+                    q: "What is the primary performance benefit of React's Virtual DOM reconciliation diffing?",
+                    options: [
+                        "It makes JavaScript execute faster in Chrome",
+                        "It avoids costly full real DOM re-renders by calculating minimal batch changes",
+                        "It eliminates the need for CSS selectors",
+                        "It stores state directly on the browser window"
+                    ],
+                    answer: 1
+                },
+                {
+                    topic: "React Virtual DOM",
+                    q: "During reconciliation, what heuristic allows React to match children across renders quickly?",
+                    options: ["class names", "unique and stable 'key' props", "z-index", "DOM element IDs"],
+                    answer: 1
+                }
+            ],
+            "Async Event Loop": [
+                {
+                    topic: "Async Event Loop",
+                    q: "Between Microtasks (Promise.then) and Macrotasks (setTimeout), which is prioritized by the Event Loop?",
+                    options: [
+                        "Macrotasks are always executed first",
+                        "Microtask queue is fully drained before the next Macrotask is processed",
+                        "They run concurrently on parallel OS threads",
+                        "Order is random"
+                    ],
+                    answer: 1
+                },
+                {
+                    topic: "Async Event Loop",
+                    q: "Where does the callback for `queueMicrotask()` land?",
+                    options: ["Call Stack", "Microtask Queue", "Macrotask Queue", "Render Pipeline"],
+                    answer: 1
+                }
+            ],
+            "Closures in JavaScript": [
+                {
+                    topic: "Closures in JavaScript",
+                    q: "Which definition accurately describes a JavaScript Closure?",
+                    options: [
+                        "A function that returns nothing (void)",
+                        "A function bundled together with references to its outer lexical environment",
+                        "A method to close browser tabs via code",
+                        "A private JSON object"
+                    ],
+                    answer: 1
+                }
+            ],
+            "HTML5 & Semantics": [
+                {
+                    topic: "HTML5 & Semantics",
+                    q: "Which semantic tag should be used for secondary or tangential sidebar content?",
+                    options: ["<nav>", "<section>", "<aside>", "<summary>"],
+                    answer: 2
+                }
+            ],
+            "CSS Flexbox / Grid": [
+                {
+                    topic: "CSS Flexbox / Grid",
+                    q: "How does `justify-content: space-between` distribute flex items along the main axis?",
+                    options: [
+                        "Items are centered with equal padding",
+                        "First item is at start, last item at end, remaining space distributed equally between",
+                        "Space is added around each element equally including outer edges",
+                        "All items stretch to fill container height"
+                    ],
+                    answer: 1
+                }
+            ],
+            "JavaScript ES6+": [
+                {
+                    topic: "JavaScript ES6+",
+                    q: "What is the Temporal Dead Zone (TDZ) in JavaScript?",
+                    options: [
+                        "The time between server request and response",
+                        "The period between variable hoisting and initialization with `let` or `const` where access throws a ReferenceError",
+                        "A deprecated function lifecycle",
+                        "The garbage collection cycle"
+                    ],
+                    answer: 1
+                }
+            ],
+            "React Hooks": [
+                {
+                    topic: "React Hooks",
+                    q: "Which rule must be respected when calling React Hooks?",
+                    options: [
+                        "Hooks can only be called inside loops",
+                        "Only call hooks at the top level of React function components, not in conditions or nested functions",
+                        "Hooks must always return HTML",
+                        "Hooks require Redux"
+                    ],
+                    answer: 1
+                }
+            ],
+            "DOM & Events": [
+                {
+                    topic: "DOM & Events",
+                    q: "What does `event.stopPropagation()` do?",
+                    options: [
+                        "Cancels the default browser action (e.g. form submission)",
+                        "Prevents the event from bubbling up the DOM tree to parent handlers",
+                        "Removes the event listener from the element",
+                        "Refreshes the page"
+                    ],
+                    answer: 1
+                }
+            ],
+            "Node.js Event Loop": [
+                {
+                    topic: "Node.js Event Loop",
+                    q: "Which phase of the Node.js event loop executes callbacks scheduled by `setImmediate()`?",
+                    options: ["Timers phase", "Check phase", "Poll phase", "Close callbacks phase"],
+                    answer: 1
+                }
+            ],
+            "Express.js Routing": [
+                {
+                    topic: "Express.js Routing",
+                    q: "How do you capture path parameters in an Express route (e.g. /users/:id)?",
+                    options: ["req.query.id", "req.params.id", "req.body.id", "req.headers.id"],
+                    answer: 1
+                }
+            ],
+            "OOPs Principles": [
+                {
+                    topic: "OOPs Principles",
+                    q: "Which principle is achieved by making class variables private and exposing public getters/setters?",
+                    options: ["Polymorphism", "Encapsulation", "Inheritance", "Loose Coupling"],
+                    answer: 1
+                }
+            ],
+            "Python Data Types": [
+                {
+                    topic: "Python Data Types",
+                    q: "Can a Python list be used as a key in a Python dictionary?",
+                    options: [
+                        "Yes, always",
+                        "No, because lists are mutable and unhashable",
+                        "Yes, if it contains only strings",
+                        "Only in Python 2"
+                    ],
+                    answer: 1
+                }
+            ]
+        };
+
+        window.addEventListener('DOMContentLoaded', function() {
+            var raw = localStorage.getItem('prepAiActiveUser');
+            if (raw) {
+                var user = JSON.parse(raw);
+                document.getElementById('sideUserName').textContent = user.name || 'Student';
+                document.getElementById('sideAvatar').textContent = (user.name || 'S').charAt(0).toUpperCase();
+            }
+            renderWeakCheckboxes();
+        });
+
+        function renderWeakCheckboxes() {
+            var list = JSON.parse(localStorage.getItem('prepAiWeakTopics') || '[]');
+            var container = document.getElementById('weakCheckboxesList');
+
+            if (list.length === 0) {
+                container.innerHTML = '<p style="color:#64748b; font-size:0.85rem; grid-column: span 2;">No weak areas flagged yet! Take a test on the "Generate Paper" page first.</p>';
+                return;
+            }
+
+            var html = '';
+            list.forEach(function(item) {
+                html += '<label class="weak-select-item">' +
+                    '<input type="checkbox" value="' + item + '" checked> ' +
+                    '<span>⚠️ ' + item + '</span>' +
+                '</label>';
+            });
+            container.innerHTML = html;
+        }
+
+        function generateAiRemedyPaper() {
+            var checked = document.querySelectorAll('#weakCheckboxesList input[type="checkbox"]:checked');
+            var selectedWeakTopics = Array.from(checked).map(function(c) { return c.value; });
+
+            if (selectedWeakTopics.length === 0) {
+                alert("Please select at least one weak topic to practice!");
+                return;
+            }
+
+            // Assemble specialized questions for selected weak topics
+            var questions = [];
+            selectedWeakTopics.forEach(function(top) {
+                var qList = weakTopicQuestionBank[top];
+                if (qList && qList.length > 0) {
+                    questions = questions.concat(qList);
+                } else {
+                    // Fallback question
+                    questions.push({
+                        topic: top,
+                        q: "Review: What is the recommended best practice when implementing " + top + " in enterprise applications?",
+                        options: [
+                            "Ignore linting errors",
+                            "Adhere to modular separation of concerns and write unit tests",
+                            "Hardcode configuration in source files",
+                            "Avoid documentation"
+                        ],
+                        answer: 1
+                    });
+                }
+            });
+
+            activeAiQuestions = questions;
+
+            // Switch views
+            document.getElementById('weakSelectionBox').classList.add('hidden');
+            document.getElementById('aiResultCard').classList.add('hidden');
+            document.getElementById('aiPaperView').classList.remove('hidden');
+
+            document.getElementById('aiPaperTitle').textContent = "AI Remedial Exam: " + selectedWeakTopics.join(", ");
+            document.getElementById('aiPaperMeta').textContent = questions.length + " Questions • Targeted at Weak Points";
+
+            // Render MCQs
+            var html = '';
+            activeAiQuestions.forEach(function(item, idx) {
+                var optsHtml = '';
+                item.options.forEach(function(opt, optIdx) {
+                    optsHtml += '<label class="option-choice">' +
+                        '<input type="radio" name="ai_q_' + idx + '" value="' + optIdx + '" required> ' +
+                        '<span>' + opt + '</span>' +
+                    '</label>';
+                });
+
+                html += '<div class="mcq-card">' +
+                    '<div class="mcq-head">' +
+                        '<span class="q-index-pill">Question ' + (idx + 1) + ' of ' + questions.length + '</span>' +
+                        '<span class="q-topic-tag" style="color:#b91c1c; background:#fef2f2;">Weak Topic: ' + item.topic + '</span>' +
+                    '</div>' +
+                    '<div class="mcq-question">' + item.q + '</div>' +
+                    '<div class="options-list">' + optsHtml + '</div>' +
+                '</div>';
+            });
+
+            document.getElementById('aiMcqDeck').innerHTML = html;
+        }
+
+        function evaluateAiPaper(e) {
+            e.preventDefault();
+            var total = activeAiQuestions.length;
+            var correct = 0;
+            var masteredWeakTopics = [];
+
+            activeAiQuestions.forEach(function(item, idx) {
+                var chosen = document.querySelector('input[name="ai_q_' + idx + '"]:checked');
+                if (chosen && parseInt(chosen.value) === item.answer) {
+                    correct++;
+                    if (masteredWeakTopics.indexOf(item.topic) === -1) {
+                        masteredWeakTopics.push(item.topic);
+                    }
+                }
+            });
+
+            var score = Math.round((correct / total) * 100);
+
+            // If mastered in this paper, reduce weak topics list
+            if (score >= 75) {
+                var allWeak = JSON.parse(localStorage.getItem('prepAiWeakTopics') || '[]');
+                allWeak = allWeak.filter(function(w) { return masteredWeakTopics.indexOf(w) === -1; });
+                localStorage.setItem('prepAiWeakTopics', JSON.stringify(allWeak));
+            }
+
+            // Show results
+            document.getElementById('aiPaperView').classList.add('hidden');
+            document.getElementById('aiResultCard').classList.remove('hidden');
+            document.getElementById('aiScoreCircle').textContent = score + '%';
+            document.getElementById('aiResultSub').textContent = "Scored " + correct + " of " + total + " correct on targeted weak concepts.";
+        }
+
+        function cancelAiPaper() {
+            document.getElementById('aiPaperView').classList.add('hidden');
+            document.getElementById('weakSelectionBox').classList.remove('hidden');
+        }
+
+        function resetAiSelection() {
+            document.getElementById('aiResultCard').classList.add('hidden');
+            document.getElementById('weakSelectionBox').classList.remove('hidden');
+            renderWeakCheckboxes();
+        }
+    </script>
+</body>
+</html>

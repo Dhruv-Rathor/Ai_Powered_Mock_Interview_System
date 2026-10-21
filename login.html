@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personalized Mock Interview System</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        <!-- Left Hero -->
+        <div class="hero-sidebar">
+            <div class="hero-content">
+                <div class="brand-badge">⚡ AI Interview System</div>
+                <h1>AI Personalized <span class="brand-accent">Mock Interview System</span></h1>
+                <p class="tagline">Personalised Mock Interview & Adaptive Evaluation Platform</p>
+
+                <div class="feature-bullets">
+                    <div class="bullet-item">
+                        <span class="icon">🎯</span>
+                        <div>
+                            <strong>Role-Based Assessments</strong>
+                            <p>Targeted exams for Frontend, Backend, Java & Python</p>
+                        </div>
+                    </div>
+                    <div class="bullet-item">
+                        <span class="icon">📝</span>
+                        <div>
+                            <strong>Interactive MCQ Testing</strong>
+                            <p>Timed exams with instant evaluation and detailed scores</p>
+                        </div>
+                    </div>
+                    <div class="bullet-item">
+                        <span class="icon">🤖</span>
+                        <div>
+                            <strong>Paper by AI</strong>
+                            <p>Auto-detects weak topics and creates targeted remedial papers</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-footer">
+                    <small>Built with HTML5, CSS3, JavaScript, Node.js & MongoDB</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Form -->
+        <div class="form-container">
+            <div class="form-card">
+                <div class="tab-header">
+                    <button type="button" class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+                    <button type="button" class="tab-btn" id="tabRegister" onclick="switchTab('register')">New Student</button>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <h2>Welcome Back</h2>
+                    <p class="form-sub">Sign in to resume your interview prep</p>
+
+                    <div class="input-block">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="student@gla.ac.in" required>
+                    </div>
+
+                    <div class="input-block">
+                        <label for="loginPass">Password</label>
+                        <input type="password" id="loginPass" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Sign In to Dashboard &rarr;</button>
+
+                    <div class="demo-tip">
+                        <span>💡 Tip:</span> Use any email (e.g. <code>dhruv@gla.ac.in</code>) and password (&ge;6 chars).
+                    </div>
+                </form>
+
+                <!-- REGISTER FORM -->
+                <form id="registerForm" class="hidden" onsubmit="handleRegister(event)">
+                    <h2>Create Profile</h2>
+                    <p class="form-sub">Register for personalised mock assessments</p>
+
+                    <div class="input-block">
+                        <label for="regName">Full Name</label>
+                        <input type="text" id="regName" placeholder="e.g. Dhruv Sharma" required>
+                    </div>
+
+                    <div class="input-block">
+                        <label for="regEmail">College Email</label>
+                        <input type="email" id="regEmail" placeholder="student@gla.ac.in" required>
+                    </div>
+
+                    <div class="input-block">
+                        <label for="regPass">Create Password</label>
+                        <input type="password" id="regPass" placeholder="Minimum 6 characters" required>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Continue &rarr;</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIRST-TIME LOGIN ONBOARDING MODAL -->
+    <div class="modal-backdrop hidden" id="onboardingModal">
+        <div class="onboarding-card">
+            <div class="modal-header">
+                <span class="onboarding-step">Student Setup Questionnaire</span>
+                <h2>Tell us about your preparation</h2>
+                <p>MockPrep AI uses these answers to personalize your question papers.</p>
+            </div>
+
+            <form id="onboardingForm" onsubmit="submitOnboarding(event)">
+                <!-- Question 1: Target Role -->
+                <div class="survey-group">
+                    <label class="survey-title">1. What primary job role are you targeting?</label>
+                    <div class="option-grid">
+                        <label class="radio-card">
+                            <input type="radio" name="targetRole" value="frontend" checked>
+                            <span>💻 Frontend Developer (React/Web)</span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="targetRole" value="backend">
+                            <span>⚙️ Backend Developer (Node.js/APIs)</span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="targetRole" value="java">
+                            <span>☕ Java Developer (Core/Spring)</span>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="targetRole" value="python">
+                            <span>🐍 Python Developer (Basics/Django)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2: Current Experience Level -->
+                <div class="survey-group">
+                    <label class="survey-title">2. How would you rate your current technical confidence?</label>
+                    <div class="option-row">
+                        <label class="radio-chip">
+                            <input type="radio" name="experienceLevel" value="beginner" checked>
+                            <span>Beginner (Learning fundamentals)</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="experienceLevel" value="intermediate">
+                            <span>Intermediate (Built projects)</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="experienceLevel" value="advanced">
+                            <span>Advanced (Interview ready)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3: Practice Goal -->
+                <div class="survey-group">
+                    <label class="survey-title">3. What is your top focus right now?</label>
+                    <div class="option-row">
+                        <label class="radio-chip">
+                            <input type="radio" name="focusGoal" value="campus_placements" checked>
+                            <span>Campus Placements</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="focusGoal" value="mock_interviews">
+                            <span>Technical MCQs & Tests</span>
+                        </label>
+                        <label class="radio-chip">
+                            <input type="radio" name="focusGoal" value="weak_topics">
+                            <span>Improving Weak Areas</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4: Daily Practice Target -->
+                <div class="survey-group">
+                    <label class="survey-title">4. How many questions do you plan to practice daily?</label>
+                    <select id="dailyTarget" class="survey-select">
+                        <option value="10">10 Questions / day (Recommended)</option>
+                        <option value="15">15 Questions / day (Intensive)</option>
+                        <option value="20">20 Questions / day (Sprint)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn" style="margin-top: 15px;">
+                    Save Profile & Launch Dashboard &rarr;
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>

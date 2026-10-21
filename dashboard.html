@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personalized Mock Interview System</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- 3-MENU SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">⚡</span>
+                <span class="brand-name">Mock<strong>AI</strong></span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item active">
+                    <span class="menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="generate-paper.html" class="menu-item">
+                    <span class="menu-icon">📄</span>
+                    <span>Generate Paper</span>
+                </a>
+                <a href="paper-by-ai.html" class="menu-item">
+                    <span class="menu-icon">🤖</span>
+                    <span>Paper by AI</span>
+                    <span class="menu-badge" id="weakBadgeCount">0 Weak</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar" id="sideAvatar">S</div>
+                <div class="user-details">
+                    <strong id="sideUserName">Student</strong>
+                    <small id="sideUserRole">Frontend Developer</small>
+                </div>
+                <button type="button" class="btn-logout" onclick="logout()" title="Logout">🚪</button>
+            </div>
+        </aside>
+
+        <!-- MAIN DASHBOARD CONTENT -->
+        <main class="main-content">
+            
+            <!-- Top Navbar -->
+            <header class="topbar">
+                <div class="topbar-welcome">
+                    <h1>Student Performance Dashboard</h1>
+                    <p>Track your assessment scores, weak points, and AI-recommended study plans</p>
+                </div>
+                <div class="topbar-actions">
+                    <a href="generate-paper.html" class="btn-primary-action">+ Take Mock Exam</a>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+                <!-- User Profile Summary Banner -->
+                <div class="profile-banner">
+                    <div class="banner-left">
+                        <h2>Welcome back, <span id="bannerUserName">Candidate</span> 👋</h2>
+                        <p>Target Career Track: <strong id="bannerTargetRole">Frontend Developer</strong> • Target: <span id="bannerTargetQs">10 Qs / Day</span></p>
+                    </div>
+                    <div class="banner-stats">
+                        <div class="mini-stat">
+                            <span>Diagnostic Level:</span>
+                            <strong id="bannerLevel">Beginner</strong>
+                        </div>
+                        <div class="mini-stat">
+                            <span>Focus Goal:</span>
+                            <strong id="bannerGoal">Campus Placements</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI METRICS -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📝</div>
+                        <div class="kpi-info">
+                            <span class="kpi-num" id="statExamsTaken">0</span>
+                            <span class="kpi-label">Exams Completed</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🎯</div>
+                        <div class="kpi-info">
+                            <span class="kpi-num" id="statAvgScore">--%</span>
+                            <span class="kpi-label">Average Score</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">✅</div>
+                        <div class="kpi-info">
+                            <span class="kpi-num" id="statStrongCount">0</span>
+                            <span class="kpi-label">Mastered Topics</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card alert-card">
+                        <div class="kpi-icon">⚠️</div>
+                        <div class="kpi-info">
+                            <span class="kpi-num" id="statWeakCount">0</span>
+                            <span class="kpi-label">Weak Topics Detected</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2 COLUMN SPLIT: WEAK AREAS ACTION + ATTEMPTS TABLE -->
+                <div class="dashboard-grid">
+
+                    <!-- Weak Areas & Paper By AI Gateway -->
+                    <div class="card weak-areas-card">
+                        <div class="card-title">
+                            <h3>🔍 Identified Weak Areas</h3>
+                            <a href="paper-by-ai.html" class="link-ai-paper">Fix with Paper by AI &rarr;</a>
+                        </div>
+                        <p class="card-desc">Topics where score was below 70% in your mock exams. Use <strong>Paper by AI</strong> to generate targeted remedy papers.</p>
+                        
+                        <div class="weak-topics-box" id="weakTopicsContainer">
+                            <!-- Populated by JS -->
+                        </div>
+
+                        <div class="ai-nudge">
+                            <span>🤖 <strong>AI Adaptive System:</strong> Click "Paper by AI" in the sidebar to generate custom papers focused specifically on these weak topics.</span>
+                        </div>
+                    </div>
+
+                    <!-- Strong Topics -->
+                    <div class="card strong-areas-card">
+                        <div class="card-title">
+                            <h3>💪 Mastered Topics</h3>
+                            <span class="badge-good">&ge; 70% Score</span>
+                        </div>
+                        <p class="card-desc">Concepts where you consistently demonstrated strong proficiency.</p>
+                        <div class="strong-topics-box" id="strongTopicsContainer">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RECENT EXAM ATTEMPTS TABLE -->
+                <div class="card table-card">
+                    <div class="card-title">
+                        <h3>📋 Recent Exam Results & Evaluation</h3>
+                        <a href="generate-paper.html" class="link-btn">Take New Exam</a>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="exam-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Job Role</th>
+                                    <th>Level</th>
+                                    <th>Score</th>
+                                    <th>Weak Points Flagged</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="examHistoryBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

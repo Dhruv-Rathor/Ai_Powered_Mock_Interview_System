@@ -1,0 +1,28 @@
+<!--
+    FILE: index.html
+    PROJECT: AI Powered Personalised Mock Interview System
+    DESCRIPTION: Entry point — redirects to login or dashboard
+                 based on session status.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personalized Mock Interview System</title>
+</head>
+<body>
+    <p style="text-align:center; margin-top:50px; font-family:sans-serif; color:#888;">
+        Redirecting...
+    </p>
+    <script>
+        // Simple redirect logic — check if user is logged in
+        var user = localStorage.getItem('mockprepUser');
+        if (user) {
+            window.location.href = 'dashboard.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
