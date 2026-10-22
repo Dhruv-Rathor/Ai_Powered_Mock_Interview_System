@@ -130,7 +130,7 @@ The project is planned to be developed in phases:
 |---|---|---|
 | Dhruv Rathor | 3FC | 2415000542 |
 | Prakhar Srivastava | 3FC | 2415001135 |
-| Sambana Chandra Shekhar | 3FC | 2415001388 |
+| Sambana Chandra Shekhar | 3FE | 2415001388 |
 
 **Project Guide:** Ms. Meghana M  
 **Department:** Computer Science & Engineering  
