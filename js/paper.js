@@ -1,10 +1,16 @@
-var currentSelectedRole = 'frontend';
+var currentSelectedRole = 'google';
 var currentSelectedLevel = 'beginner';
 var activeExamQuestions = [];
 var examTimerInterval = null;
 
-// Syllabus Topics for each role
+// Syllabus Topics for each role & company placement paper
 var roleSyllabus = {
+    google: ['Binary Trees & LCA', 'Dynamic Programming', 'LRU Cache Design', 'Hash Table Collisions', 'Asymptotic Complexity'],
+    amazon: ['Lowest Common Ancestor (LCA)', 'Top K Frequent Elements (Heap)', 'LRU Cache Architecture', 'Sliding Window', 'Virtual Memory & TLB'],
+    microsoft: ['Cycle Detection in Linked Lists', 'Graph BFS/DFS', 'Bit Manipulation', 'Trie Data Structure', 'Deadlock & Concurrency'],
+    tcs: ['Floyd Tortoise & Hare Algorithm', 'SQL 2nd Highest Salary', 'Deadlock 4 Conditions', 'Java String Pool', 'Method Overloading vs Overriding'],
+    infosys: ['0/1 Knapsack Recurrence', 'Dijkstra vs Bellman-Ford', 'Clustered vs Non-Clustered Index', 'TCP 3-Way Handshake', 'Microservices Architecture'],
+    wipro: ['String Anagram in O(N)', 'SQL Join Variations', 'Call-by-Value vs Reference', 'Array Sliding Logic', 'OOPs Inheritance'],
     frontend: ['HTML5 & Semantics', 'CSS Flexbox / Grid', 'JavaScript ES6+', 'React Hooks', 'DOM & Events'],
     backend: ['Node.js Event Loop', 'Express.js Routing', 'REST API Architecture', 'JWT Authentication', 'MongoDB Indexing'],
     java: ['OOPs Principles', 'Collections Framework', 'Exception Handling', 'Multithreading', 'Spring Boot Basics'],
@@ -13,6 +19,289 @@ var roleSyllabus = {
 
 // MCQ QUESTION BANK (with verified correct answers & topic tagging)
 var mcqQuestionBank = {
+    google: [
+        {
+            topic: "Binary Trees & LCA",
+            q: "In a Binary Search Tree (BST), what is the time complexity to find the Lowest Common Ancestor (LCA) of two nodes when the tree height is h?",
+            options: ["O(N^2)", "O(h)", "O(1)", "O(N log N)"],
+            answer: 1
+        },
+        {
+            topic: "Dynamic Programming",
+            q: "Which algorithmic technique is optimal for solving the Longest Common Subsequence (LCS) problem of two strings of lengths m and n?",
+            options: [
+                "Greedy Choice in O(m + n)",
+                "Dynamic Programming with 2D table in O(m * n)",
+                "Divide and Conquer in O(2^(m+n))",
+                "Binary Search in O(log(m+n))"
+            ],
+            answer: 1
+        },
+        {
+            topic: "LRU Cache Design",
+            q: "Which combination of data structures provides O(1) time complexity for both get() and put() operations in an LRU Cache?",
+            options: ["Array and Stack", "Doubly Linked List and Hash Map", "Binary Search Tree and Queue", "Priority Queue and Set"],
+            answer: 1
+        },
+        {
+            topic: "Hash Table Collisions",
+            q: "In an Open Addressing hash table using Double Hashing, why must the second hash function h2(k) never evaluate to 0?",
+            options: [
+                "It causes array index out of bounds",
+                "It would cause the probe step size to be 0, creating an infinite loop on the same bucket",
+                "It corrupts hash table metadata",
+                "Double hashing requires h2(k) to evaluate to a negative integer"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Asymptotic Complexity",
+            q: "What is the worst-case time complexity of QuickSelect to find the k-th smallest element when using a deterministic first-element pivot?",
+            options: ["O(log N)", "O(N)", "O(N^2)", "O(N log N)"],
+            answer: 2
+        }
+    ],
+
+    amazon: [
+        {
+            topic: "Lowest Common Ancestor (LCA)",
+            q: "In a general Binary Tree (not BST), what condition determines that node 'root' is the Lowest Common Ancestor of nodes p and q?",
+            options: [
+                "root.val == p.val + q.val",
+                "Both left and right subtrees return non-null from recursive search, or root matches one node while the other is in a subtree",
+                "root is the leaf node closest to p",
+                "root is at depth 0"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Top K Frequent Elements (Heap)",
+            q: "Which approach finds the Top K Frequent Elements in an array of size N with optimal O(N log K) time and O(N) space?",
+            options: [
+                "Sort entire array in O(N log N)",
+                "Frequency HashMap + Min-Heap of size K",
+                "Bubble Sort on frequency array",
+                "Linear scan with stack"
+            ],
+            answer: 1
+        },
+        {
+            topic: "LRU Cache Architecture",
+            q: "In an LRU Cache, when maximum capacity is reached and a new element arrives, which node is evicted?",
+            options: [
+                "The head node (most recently used)",
+                "The tail node (least recently accessed)",
+                "A randomly chosen node",
+                "The node with the lowest numeric key value"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Virtual Memory & TLB",
+            q: "What is the primary function of the Translation Lookaside Buffer (TLB) in CPU memory management?",
+            options: [
+                "To store dirty cache lines for disk flush",
+                "A fast hardware cache of recent virtual-to-physical page frame translations to accelerate MMU lookups",
+                "To store interrupt vector tables",
+                "To balance thread load across CPU cores"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Sliding Window",
+            q: "What is the time complexity of the Sliding Window technique to find the maximum sum subarray of fixed size K in an array of size N?",
+            options: ["O(N * K)", "O(N)", "O(N^2)", "O(K log N)"],
+            answer: 1
+        }
+    ],
+
+    microsoft: [
+        {
+            topic: "Cycle Detection in Linked Lists",
+            q: "Floyd's Tortoise and Hare algorithm detects a cycle in a linked list. If a cycle exists, what is its time complexity?",
+            options: ["O(N)", "O(N^2)", "O(1)", "O(N!)"],
+            answer: 0
+        },
+        {
+            topic: "Graph BFS/DFS",
+            q: "Which traversal algorithm is strictly guaranteed to find the shortest path between two vertices in an unweighted directed graph?",
+            options: ["Depth First Search (DFS)", "Breadth First Search (BFS)", "Topological Sort", "In-order traversal"],
+            answer: 1
+        },
+        {
+            topic: "Bit Manipulation",
+            q: "What operation does the expression `(n & (n - 1))` perform in binary arithmetic?",
+            options: [
+                "Checks if n is odd",
+                "Clears the lowest set (rightmost 1) bit of n",
+                "Inverts all bits of n",
+                "Multiplies n by 2"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Trie Data Structure",
+            q: "Why is a Trie preferred over a Hash Table for implementing search engine auto-complete queries?",
+            options: [
+                "Tries use less memory than flat arrays",
+                "Tries support fast O(L) prefix-based search queries where L is prefix length",
+                "Tries provide O(1) delete",
+                "Hash tables cannot store strings"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Deadlock & Concurrency",
+            q: "In operating systems, what is a Race Condition?",
+            options: [
+                "When two processes run at different CPU clock speeds",
+                "When multiple threads concurrently access and modify shared data, and the final outcome depends on execution timing",
+                "A hardware bus failure",
+                "When a thread is preempted during I/O wait"
+            ],
+            answer: 1
+        }
+    ],
+
+    tcs: [
+        {
+            topic: "Floyd Tortoise & Hare Algorithm",
+            q: "In Floyd's Cycle-Finding Algorithm for linked lists, by how many nodes does the fast pointer advance per iteration relative to the slow pointer?",
+            options: ["1 node", "2 nodes (1 node faster than slow)", "3 nodes", "It jumps directly to the tail"],
+            answer: 1
+        },
+        {
+            topic: "SQL 2nd Highest Salary",
+            q: "Which standard SQL query finds the second highest salary without using proprietary LIMIT or TOP clauses?",
+            options: [
+                "SELECT MAX(salary) FROM Employee WHERE salary < (SELECT MAX(salary) FROM Employee)",
+                "SELECT salary FROM Employee ORDER BY salary DESC",
+                "SELECT AVG(salary) FROM Employee",
+                "SELECT MIN(salary) FROM Employee"
+            ],
+            answer: 0
+        },
+        {
+            topic: "Deadlock 4 Conditions",
+            q: "Which of the following is NOT one of Coffman's four conditions required for deadlock to occur?",
+            options: ["Mutual Exclusion", "Circular Wait", "Preemption Allowed", "Hold and Wait"],
+            answer: 2
+        },
+        {
+            topic: "Java String Pool",
+            q: "Where are String literals created in Java 8 and later JVM implementations?",
+            options: [
+                "PermGen space",
+                "String Constant Pool located inside the main Heap memory",
+                "Stack memory frame",
+                "Native CPU registers"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Method Overloading vs Overriding",
+            q: "Can a private or static method be overridden in Java?",
+            options: [
+                "Yes, using the @Override annotation",
+                "No, private methods are not inherited and static methods are shadowed/hidden, not overridden",
+                "Only if protected modifier is added",
+                "Yes, in interfaces"
+            ],
+            answer: 1
+        }
+    ],
+
+    infosys: [
+        {
+            topic: "0/1 Knapsack Recurrence",
+            q: "In the 0/1 Knapsack problem with N items and maximum weight capacity W, what is the space complexity when space-optimized?",
+            options: ["O(N * W)", "O(W)", "O(N)", "O(1)"],
+            answer: 1
+        },
+        {
+            topic: "Dijkstra vs Bellman-Ford",
+            q: "Why cannot Dijkstra's algorithm be safely used on graphs containing negative edge weights?",
+            options: [
+                "It throws a stack overflow exception",
+                "Dijkstra's greedy assumption assumes once a node is visited its distance is minimized, which negative edges violate",
+                "Dijkstra requires directed acyclic graphs only",
+                "Dijkstra only runs on unweighted graphs"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Clustered vs Non-Clustered Index",
+            q: "How many Clustered Indexes can be created on a single database table in relational DBMS?",
+            options: ["Unlimited", "Exactly 1", "Up to 16", "Equal to the number of columns"],
+            answer: 1
+        },
+        {
+            topic: "TCP 3-Way Handshake",
+            q: "What flag does the receiving server send back in response to the initial TCP SYN packet during a Three-Way Handshake?",
+            options: ["FIN", "SYN-ACK", "RST", "ACK only"],
+            answer: 1
+        },
+        {
+            topic: "Microservices Architecture",
+            q: "What is the primary architectural purpose of an API Gateway in a microservices deployment?",
+            options: [
+                "To replace the primary database",
+                "To serve as a reverse proxy providing centralized authentication, rate limiting, and request routing to backend services",
+                "To compile client-side TypeScript code",
+                "To host static HTML files"
+            ],
+            answer: 1
+        }
+    ],
+
+    wipro: [
+        {
+            topic: "String Anagram in O(N)",
+            q: "What is the most space-efficient time-optimal method to verify if two strings of lowercase English alphabets are anagrams?",
+            options: [
+                "Sort both strings in O(N log N)",
+                "Maintain an integer frequency array of size 26 for char counting in O(N) time and O(1) space",
+                "Use nested loops in O(N^2)",
+                "Generate all string permutations"
+            ],
+            answer: 1
+        },
+        {
+            topic: "SQL Join Variations",
+            q: "Which SQL JOIN returns all records from the left table, and matching records from the right table (with NULL for non-matches)?",
+            options: ["INNER JOIN", "LEFT OUTER JOIN", "RIGHT OUTER JOIN", "CROSS JOIN"],
+            answer: 1
+        },
+        {
+            topic: "Call-by-Value vs Reference",
+            q: "In Java, how are object parameters passed to methods?",
+            options: [
+                "Strictly Call-by-Reference",
+                "Call-by-Value where the value passed is the object reference copy",
+                "Call-by-Name",
+                "Call-by-Result"
+            ],
+            answer: 1
+        },
+        {
+            topic: "Array Sliding Logic",
+            q: "Which data structure follows the Last-In-First-Out (LIFO) order and is used for function call stacks and undo operations?",
+            options: ["Queue", "Stack", "Priority Queue", "Circular Buffer"],
+            answer: 1
+        },
+        {
+            topic: "OOPs Inheritance",
+            q: "What is the primary difference between Black-Box Testing and White-Box Testing?",
+            options: [
+                "Black-Box tests UI colors, White-Box tests text",
+                "Black-Box tests functionality without knowing internal code structure, whereas White-Box examines internal logic and code paths",
+                "Black-Box is manual only, White-Box is automated only",
+                "There is no difference"
+            ],
+            answer: 1
+        }
+    ],
+
     frontend: [
         {
             topic: "HTML5 & Semantics",
@@ -212,16 +501,26 @@ function loadUserNav() {
     }
 }
 
-function onRoleChanged(role) {
-    currentSelectedRole = role;
+function getRoleDisplayName(role) {
     var roleNames = {
+        google: 'Google Placement Paper (2026)',
+        amazon: 'Amazon SDE Placement (2026)',
+        microsoft: 'Microsoft Software Engineering OA',
+        tcs: 'TCS NQT & Digital Placement Exam',
+        infosys: 'Infosys Specialist Programmer (SP) Exam',
+        wipro: 'Wipro Elite NLTH Placement Exam',
         frontend: 'Frontend Developer',
         backend: 'Backend Developer',
         java: 'Java Developer',
         python: 'Python Developer'
     };
+    return roleNames[role] || 'Technical Assessment';
+}
+
+function onRoleChanged(role) {
+    currentSelectedRole = role;
     var labelEl = document.getElementById('selectedRoleLabel');
-    if (labelEl) labelEl.textContent = roleNames[role] || 'Selected Role';
+    if (labelEl) labelEl.textContent = getRoleDisplayName(role);
 
     // Populate role topics checkboxes
     var container = document.getElementById('roleTopicsContainer');
@@ -315,13 +614,6 @@ function startGeneratedExam() {
     document.getElementById('resultStage').classList.add('hidden');
     document.getElementById('examStage').classList.remove('hidden');
 
-    var roleNames = {
-        frontend: 'Frontend Developer',
-        backend: 'Backend Developer',
-        java: 'Java Developer',
-        python: 'Python Developer'
-    };
-
     var durationRadio = document.querySelector('input[name="examDuration"]:checked');
     var totalSeconds = 600;
     var displayDurationLabel = "10 Mins";
@@ -347,7 +639,7 @@ function startGeneratedExam() {
         }
     }
 
-    document.getElementById('examBannerTitle').textContent = roleNames[currentSelectedRole] + ' Assessment';
+    document.getElementById('examBannerTitle').textContent = getRoleDisplayName(currentSelectedRole) + ' Assessment';
     document.getElementById('examBannerMeta').textContent = count + ' Questions • ' + displayDurationLabel + ' Time Limit • Pass criteria: 70%';
 
     // Render MCQ Cards
@@ -465,15 +757,7 @@ function evaluateExam(e) {
     });
 
     var scorePct = Math.round((correctCount / total) * 100);
-
-    var roleNames = {
-        frontend: 'Frontend Developer',
-        backend: 'Backend Developer',
-        java: 'Java Developer',
-        python: 'Python Developer'
-    };
-
-    var roleLabel = roleNames[currentSelectedRole] || 'Developer';
+    var roleLabel = getRoleDisplayName(currentSelectedRole);
     var levelLabel = currentSelectedLevel.charAt(0).toUpperCase() + currentSelectedLevel.slice(1);
 
     // Save this attempt to exam history

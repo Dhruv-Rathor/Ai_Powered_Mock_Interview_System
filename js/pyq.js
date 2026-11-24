@@ -1,14 +1,15 @@
 // B.Tech PYQ Search, Filter & PDF View Engine
-// NO download buttons — view as PDF only
+// Displays downloaded placement PDFs from C:\Users\Dhruv\Desktop\mnproject2\pyqs + semester papers
 
 document.addEventListener('DOMContentLoaded', function() {
     initPyqPortal();
 });
 
+var allPyqsList = [];
 var currentFilteredPyqs = [];
 var currentOpenPaperId  = null;
 
-function initPyqPortal() {
+async function initPyqPortal() {
     var user = JSON.parse(localStorage.getItem('prepAiActiveUser') || '{}');
     if (user.name) {
         var sideName   = document.getElementById('sideUserName');
@@ -17,14 +18,54 @@ function initPyqPortal() {
         if (sideAvatar) sideAvatar.textContent = user.name.charAt(0).toUpperCase();
     }
 
-    currentFilteredPyqs = btechPyqDatabase.slice();
+    var basePyqs = (typeof btechPyqDatabase !== 'undefined') ? btechPyqDatabase.slice() : [];
+
+    // Fetch downloaded PDFs from backend /api/pyqs/downloaded-pdfs
+    try {
+        var res = await fetch('/api/pyqs/downloaded-pdfs');
+        var data = await res.json();
+        if (data && data.success && data.files && data.files.length > 0) {
+            var pdfPapers = data.files.map(function(pdf) {
+                return {
+                    id: pdf.id,
+                    title: pdf.title,
+                    subject: 'Company Placement',
+                    company: pdf.company,
+                    year: pdf.year,
+                    targetRole: pdf.company + ' Campus Placement',
+                    difficulty: 'Placement Standard',
+                    duration: '90 mins',
+                    totalMarks: 100,
+                    size: pdf.size,
+                    description: 'Official downloaded campus recruitment question paper (' + pdf.size + ') from PlacementPapers.app. Covers aptitude, coding rounds, and company-specific interview patterns.',
+                    isRawPdf: true,
+                    pdfUrl: pdf.url,
+                    questions: [
+                        {
+                            qNo: 1,
+                            topic: pdf.company + ' Placement Test',
+                            question: 'This paper was directly downloaded from PlacementPapers.app for ' + pdf.company + ' 2026 campus recruitment drive (' + pdf.size + '). It contains real technical aptitude, coding challenges and eligibility criteria.',
+                            answer: 'Click "Open Raw PDF" to inspect the official PDF document directly in your browser.'
+                        }
+                    ]
+                };
+            });
+            // Show downloaded PDFs first
+            basePyqs = pdfPapers.concat(basePyqs);
+        }
+    } catch (e) {
+        console.log("Downloaded PDFs fetch notice:", e);
+    }
+
+    allPyqsList = basePyqs;
+    currentFilteredPyqs = allPyqsList.slice();
     renderPyqCards(currentFilteredPyqs);
     updateStatsCounter();
 }
 
 function updateStatsCounter() {
     var countEl = document.getElementById('pyqResultsCount');
-    if (countEl) countEl.textContent = currentFilteredPyqs.length + ' Papers Available';
+    if (countEl) countEl.textContent = currentFilteredPyqs.length + ' Papers Available (Including Downloaded PDFs)';
 }
 
 function renderPyqCards(pyqs) {
@@ -47,29 +88,44 @@ function renderPyqCards(pyqs) {
         if (paper.difficulty.toLowerCase().includes('easy')) diffClass = 'diff-easy';
         if (paper.difficulty.toLowerCase().includes('hard')) diffClass = 'diff-hard';
 
+        var pdfBadge = paper.isRawPdf ? '<span style="background:#fee2e2;color:#991b1b;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:12px;margin-left:6px;">📄 Official PDF</span>' : '';
+
+        var actionButtons = '';
+        if (paper.isRawPdf) {
+            actionButtons = '<button type="button" class="btn-pyq-preview" onclick="openPyqModal(\'' + paper.id + '\')">' +
+                '👁️ Overview' +
+            '</button>' +
+            '<button type="button" class="btn-pyq-view-pdf" onclick="window.open(\'' + paper.pdfUrl + '\', \'_blank\')" style="background:linear-gradient(135deg,#0284c7,#2563eb);">' +
+                '📄 Open Raw PDF' +
+            '</button>';
+        } else {
+            actionButtons = '<button type="button" class="btn-pyq-preview" onclick="openPyqModal(\'' + paper.id + '\')">' +
+                '👁️ View Paper &amp; Solutions' +
+            '</button>' +
+            '<button type="button" class="btn-pyq-view-pdf" onclick="openPyqAsPdf(\'' + paper.id + '\')">' +
+                '📄 Open as PDF' +
+            '</button>';
+        }
+
         html += '<div class="pyq-card">' +
             '<div class="pyq-header">' +
                 '<div>' +
                     '<span class="pyq-tag">' + escapeHtml(paper.subject) + '</span>' +
                     '<span class="pyq-company-tag">' + escapeHtml(paper.company) + '</span>' +
+                    pdfBadge +
                 '</div>' +
-                '<span class="pyq-diff-badge ' + diffClass + '">' + escapeHtml(paper.difficulty) + '</span>' +
+                '<span class="pyq-diff-badge " + diffClass + "">' + escapeHtml(paper.difficulty) + '</span>' +
             '</div>' +
             '<h3 class="pyq-title">' + escapeHtml(paper.title) + '</h3>' +
             '<p class="pyq-desc">' + escapeHtml(paper.description) + '</p>' +
             '<div class="pyq-meta-row">' +
                 '<span>📅 Year: <strong>' + paper.year + '</strong></span>' +
                 '<span>⏱️ ' + escapeHtml(paper.duration) + '</span>' +
-                '<span>❓ ' + paper.questions.length + ' Questions</span>' +
+                '<span>❓ ' + (paper.questions ? paper.questions.length : 1) + ' Questions</span>' +
                 '<span>💯 ' + paper.totalMarks + ' Marks</span>' +
             '</div>' +
             '<div class="pyq-card-footer">' +
-                '<button type="button" class="btn-pyq-preview" onclick="openPyqModal(\'' + paper.id + '\')">' +
-                    '👁️ View Paper &amp; Solutions' +
-                '</button>' +
-                '<button type="button" class="btn-pyq-view-pdf" onclick="openPyqAsPdf(\'' + paper.id + '\')">' +
-                    '📄 Open as PDF' +
-                '</button>' +
+                actionButtons +
             '</div>' +
         '</div>';
     });
@@ -83,17 +139,17 @@ function filterPyqs() {
     var subjectVal = document.getElementById('pyqSubjectFilter').value;
     var companyVal = document.getElementById('pyqCompanyFilter').value;
 
-    currentFilteredPyqs = btechPyqDatabase.filter(function(paper) {
+    currentFilteredPyqs = allPyqsList.filter(function(paper) {
         var matchSearch = true;
         if (searchVal) {
             matchSearch = paper.title.toLowerCase().indexOf(searchVal) !== -1 ||
                 paper.description.toLowerCase().indexOf(searchVal) !== -1 ||
                 paper.subject.toLowerCase().indexOf(searchVal) !== -1 ||
                 paper.company.toLowerCase().indexOf(searchVal) !== -1 ||
-                paper.questions.some(function(q) {
+                (paper.questions && paper.questions.some(function(q) {
                     return q.question.toLowerCase().indexOf(searchVal) !== -1 ||
                            q.topic.toLowerCase().indexOf(searchVal) !== -1;
-                });
+                }));
         }
         var matchSubject = (subjectVal === 'all') || (paper.subject === subjectVal);
         var matchCompany = (companyVal === 'all') || (paper.company.toLowerCase().indexOf(companyVal.toLowerCase()) !== -1);
@@ -113,7 +169,7 @@ function resetFilters() {
 
 // Open Detail Modal (view questions in-page)
 function openPyqModal(paperId) {
-    var paper = btechPyqDatabase.find(function(p) { return p.id === paperId; });
+    var paper = allPyqsList.find(function(p) { return p.id === paperId; });
     if (!paper) return;
 
     currentOpenPaperId = paperId;
@@ -126,28 +182,40 @@ function openPyqModal(paperId) {
     var qListEl = document.getElementById('modalQuestionsList');
     var qHtml = '';
 
-    paper.questions.forEach(function(q) {
-        var codeBlock = '';
-        if (q.code && q.code.trim()) {
-            codeBlock = '<div class="solution-code">' +
-                '<div class="code-badge">Code / SQL / Approach:</div>' +
-                '<pre><code>' + escapeHtml(q.code) + '</code></pre>' +
-            '</div>';
-        }
-
-        qHtml += '<div class="modal-q-item">' +
-            '<div class="q-item-header">' +
-                '<span class="q-num">Q' + q.qNo + '.</span>' +
-                '<span class="q-topic-tag">' + escapeHtml(q.topic) + '</span>' +
-            '</div>' +
-            '<h4 class="q-text">' + escapeHtml(q.question) + '</h4>' +
-            '<div class="q-solution-box">' +
-                '<strong class="sol-heading">💡 Solution &amp; Technical Explanation:</strong>' +
-                '<p class="sol-text">' + escapeHtml(q.answer).replace(/\n/g, '<br>') + '</p>' +
-                codeBlock +
-            '</div>' +
+    if (paper.isRawPdf) {
+        qHtml = '<div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:24px;text-align:center;margin-bottom:16px;">' +
+            '<span style="font-size:2.5rem;display:block;margin-bottom:8px;">📑</span>' +
+            '<h3 style="font-size:1.15rem;font-weight:800;color:#1e3a8a;margin-bottom:6px;">' + escapeHtml(paper.title) + '</h3>' +
+            '<p style="color:#3b82f6;font-size:0.875rem;margin-bottom:14px;">Downloaded from PlacementPapers.app (' + (paper.size || 'PDF') + ')</p>' +
+            '<p style="color:#475569;font-size:0.875rem;line-height:1.6;max-width:540px;margin:0 auto 18px;">This is an authentic campus placement paper containing official aptitude patterns, coding challenges, and selection guidelines for ' + escapeHtml(paper.company) + '.</p>' +
+            '<button type="button" class="btn-pyq-view-pdf" onclick="window.open(\'' + paper.pdfUrl + '\', \'_blank\')" style="display:inline-flex;padding:12px 24px;font-size:0.95rem;background:linear-gradient(135deg,#0284c7,#2563eb);">' +
+                '📄 Open Official Raw PDF in Browser' +
+            '</button>' +
         '</div>';
-    });
+    } else {
+        paper.questions.forEach(function(q) {
+            var codeBlock = '';
+            if (q.code && q.code.trim()) {
+                codeBlock = '<div class="solution-code">' +
+                    '<div class="code-badge">Code / SQL / Approach:</div>' +
+                    '<pre><code>' + escapeHtml(q.code) + '</code></pre>' +
+                '</div>';
+            }
+
+            qHtml += '<div class="modal-q-item">' +
+                '<div class="q-item-header">' +
+                    '<span class="q-num">Q' + q.qNo + '.</span>' +
+                    '<span class="q-topic-tag">' + escapeHtml(q.topic) + '</span>' +
+                '</div>' +
+                '<h4 class="q-text">' + escapeHtml(q.question) + '</h4>' +
+                '<div class="q-solution-box">' +
+                    '<strong class="sol-heading">💡 Solution &amp; Technical Explanation:</strong>' +
+                    '<p class="sol-text">' + escapeHtml(q.answer).replace(/\n/g, '<br>') + '</p>' +
+                    codeBlock +
+                '</div>' +
+            '</div>';
+        });
+    }
 
     qListEl.innerHTML = qHtml;
     document.getElementById('pyqDetailModal').classList.remove('hidden');
@@ -161,14 +229,24 @@ function closePyqModal() {
 // Open current paper from modal as PDF view
 function openCurrentPaperAsPdf() {
     if (currentOpenPaperId) {
-        openPyqAsPdf(currentOpenPaperId);
+        var paper = allPyqsList.find(function(p) { return p.id === currentOpenPaperId; });
+        if (paper && paper.isRawPdf) {
+            window.open(paper.pdfUrl, '_blank');
+        } else {
+            openPyqAsPdf(currentOpenPaperId);
+        }
     }
 }
 
 // Open PYQ paper as a clean printable PDF-style view in a new tab
 function openPyqAsPdf(paperId) {
-    var paper = btechPyqDatabase.find(function(p) { return p.id === paperId; });
+    var paper = allPyqsList.find(function(p) { return p.id === paperId; });
     if (!paper) return;
+
+    if (paper.isRawPdf) {
+        window.open(paper.pdfUrl, '_blank');
+        return;
+    }
 
     var questionsHtml = '';
     paper.questions.forEach(function(q) {

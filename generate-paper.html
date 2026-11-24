@@ -48,6 +48,37 @@
             padding: 3px 10px; border-radius: 20px; letter-spacing: .5px;
         }
 
+        /* ── AI SUB-MODE TABS ───────────────────────────────────── */
+        .ai-tab-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            background: #f1f5f9;
+            padding: 6px;
+            border-radius: 12px;
+        }
+        .ai-tab-btn {
+            flex: 1;
+            padding: 12px 18px;
+            border: none;
+            background: transparent;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #475569;
+            border-radius: 9px;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .ai-tab-btn.active {
+            background: #ffffff;
+            color: #1e293b;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
         /* ── AI MODE PANEL ─────────────────────────────────────── */
         .ai-panel {
             background: #fff;
@@ -55,9 +86,27 @@
             border-radius: 20px;
             padding: 32px;
         }
-        .ai-panel-head { margin-bottom: 24px; }
+        .ai-panel-head {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
         .ai-panel-head h2 { font-size: 1.3rem; font-weight: 800; color: #1e293b; margin: 0 0 4px; }
         .ai-panel-head p  { font-size: 0.875rem; color: #64748b; margin: 0; }
+        .ai-status-badge {
+            background: #dcfce7;
+            color: #166534;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
 
         .weak-box {
             background: linear-gradient(135deg, #fff7ed, #fef3c7);
@@ -66,31 +115,31 @@
             padding: 18px 20px;
             margin-bottom: 24px;
         }
-        .weak-box-title { font-size: 0.8rem; font-weight: 700; color: #92400e; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .weak-box-title { font-size: 0.82rem; font-weight: 800; color: #92400e; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         .weak-tags { display: flex; flex-wrap: wrap; gap: 8px; }
         .weak-tag {
             background: #fef9c3; border: 1.5px solid #fbbf24;
-            color: #78350f; font-size: 0.78rem; font-weight: 600;
-            padding: 4px 12px; border-radius: 20px; cursor: pointer;
-            transition: background .15s;
+            color: #78350f; font-size: 0.82rem; font-weight: 700;
+            padding: 6px 14px; border-radius: 20px; cursor: pointer;
+            transition: all .15s;
         }
         .weak-tag:hover { background: #fde68a; }
         .weak-tag.selected-tag { background: #f59e0b; color: #fff; border-color: #d97706; }
-        .no-weak { color: #92400e; font-size: 0.85rem; }
+        .no-weak { color: #92400e; font-size: 0.88rem; line-height: 1.5; }
 
         .ai-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         @media (max-width: 600px) { .ai-form-grid { grid-template-columns: 1fr; } }
 
         .ai-field label { font-size: 0.82rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px; }
-        .ai-field select, .ai-field input[type="text"], .ai-field input[type="number"], .ai-field input[type="password"] {
-            width: 100%; padding: 10px 14px; border: 1.5px solid #d1d5db;
+        .ai-field select, .ai-field input[type="text"] {
+            width: 100%; padding: 11px 14px; border: 1.5px solid #d1d5db;
             border-radius: 10px; font-size: 0.875rem; color: #1e293b;
             background: #f8fafc; outline: none; font-family: inherit;
             transition: border-color .2s;
         }
         .ai-field select:focus, .ai-field input:focus { border-color: #3b82f6; background: #fff; }
 
-        .ai-topic-full { margin-bottom: 20px; }
+        .ai-topic-full { margin-bottom: 24px; }
         .ai-topic-full label { font-size: 0.82rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px; }
         .ai-topic-full input {
             width: 100%; padding: 11px 16px; border: 1.5px solid #d1d5db;
@@ -99,17 +148,6 @@
             transition: border-color .2s; box-sizing: border-box;
         }
         .ai-topic-full input:focus { border-color: #3b82f6; background: #fff; }
-
-        .api-key-wrap { margin-bottom: 24px; }
-        .api-key-wrap label { font-size: 0.82rem; font-weight: 700; color: #374151; display: block; margin-bottom: 6px; }
-        .api-key-wrap input {
-            width: 100%; padding: 11px 16px; border: 1.5px solid #d1d5db;
-            border-radius: 10px; font-size: 0.875rem; font-family: 'JetBrains Mono', monospace;
-            background: #f0fdf4; outline: none; color: #064e3b;
-            transition: border-color .2s; box-sizing: border-box;
-        }
-        .api-key-wrap input:focus { border-color: #10b981; background: #fff; }
-        .api-key-hint { font-size: 0.75rem; color: #6b7280; margin-top: 5px; }
 
         .btn-generate-ai {
             width: 100%; padding: 15px 24px;
@@ -121,50 +159,151 @@
         .btn-generate-ai:hover { opacity: .92; transform: translateY(-2px); }
         .btn-generate-ai:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
-        .ai-loading {
-            text-align: center; padding: 48px 0; display: none;
-        }
+        /* Loading */
+        .ai-loading { text-align: center; padding: 48px 0; display: none; }
         .ai-spinner {
             width: 48px; height: 48px; border: 4px solid #e2e8f0;
             border-top-color: #2563eb; border-radius: 50%;
             animation: spin .7s linear infinite; margin: 0 auto 16px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .ai-loading p { color: #64748b; font-weight: 600; }
+        .ai-loading p { color: #1e293b; font-weight: 700; font-size: 1.05rem; margin-bottom: 4px; }
 
-        .ai-result-panel { display: none; }
-        .ai-result-header {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border-radius: 16px 16px 0 0; padding: 22px 28px; color: #fff;
+        /* Interactive MCQ Exam Stage for AI */
+        .ai-exam-container { display: none; margin-top: 10px; }
+        .ai-exam-banner {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #fff;
+            padding: 24px 28px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .ai-result-header h3 { margin: 0 0 4px; font-size: 1.1rem; font-weight: 800; }
-        .ai-result-header p  { margin: 0; font-size: 0.82rem; color: #94a3b8; }
-        .ai-questions-list { padding: 20px; border: 1.5px solid #e2e8f0; border-top: none; border-radius: 0 0 16px 16px; }
+        .ai-exam-banner h2 { font-size: 1.35rem; font-weight: 800; margin: 0 0 6px; }
+        .ai-exam-banner p  { color: #94a3b8; font-size: 0.85rem; margin: 0; }
 
-        .ai-q-card {
-            background: #f8fafc; border-radius: 12px; padding: 20px;
-            margin-bottom: 16px; border-left: 4px solid #3b82f6;
+        .ai-mcq-card {
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: border-color .2s;
         }
-        .ai-q-num { font-size: 0.72rem; font-weight: 800; color: #3b82f6; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 6px; }
-        .ai-q-text { font-size: 0.925rem; font-weight: 700; color: #1e293b; margin-bottom: 12px; line-height: 1.55; }
-        .ai-opt { font-size: 0.85rem; color: #374151; padding: 6px 10px; border-radius: 7px; margin-bottom: 4px; }
-        .ai-opt.correct-opt { background: #dcfce7; color: #166534; font-weight: 700; }
-        .ai-explain { margin-top: 10px; font-size: 0.8rem; color: #64748b; background: #fff; padding: 10px 12px; border-radius: 8px; border: 1px solid #e2e8f0; line-height: 1.6; }
+        .ai-mcq-card.res-correct { border-color: #22c55e; background: #f0fdf4; }
+        .ai-mcq-card.res-incorrect { border-color: #ef4444; background: #fef2f2; }
 
-        .ai-actions { display: flex; gap: 12px; padding: 16px 20px 20px; }
-        .btn-retake { flex: 1; padding: 12px; background: #f1f5f9; color: #374151; font-weight: 700; border: 1.5px solid #d1d5db; border-radius: 10px; cursor: pointer; font-size: 0.875rem; transition: background .15s; }
-        .btn-retake:hover { background: #e2e8f0; }
-        .btn-to-exam {
-            flex: 2; padding: 12px; background: linear-gradient(135deg, #10b981, #059669);
-            color: #fff; font-weight: 800; border: none; border-radius: 10px;
-            cursor: pointer; font-size: 0.875rem; transition: opacity .15s;
+        .ai-mcq-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
         }
-        .btn-to-exam:hover { opacity: .9; }
+        .ai-mcq-num {
+            font-size: 0.78rem; font-weight: 800; color: #2563eb;
+            letter-spacing: .8px; text-transform: uppercase;
+        }
+        .ai-mcq-topic {
+            background: #f1f5f9; color: #475569;
+            font-size: 0.75rem; font-weight: 700;
+            padding: 4px 10px; border-radius: 20px;
+        }
+        .ai-mcq-question {
+            font-size: 1rem; font-weight: 700; color: #0f172a;
+            margin-bottom: 18px; line-height: 1.55;
+        }
 
-        /* mode switcher back link */
+        .ai-options-deck { display: flex; flex-direction: column; gap: 10px; }
+        .ai-option-label {
+            display: flex; align-items: center; gap: 12px;
+            border: 1.5px solid #e2e8f0; border-radius: 10px;
+            padding: 12px 16px; cursor: pointer;
+            font-size: 0.9rem; font-weight: 600; color: #334155;
+            background: #fff; transition: all .15s;
+        }
+        .ai-option-label:hover { border-color: #3b82f6; background: #f8fafc; }
+        .ai-option-label input[type="radio"] { accent-color: #2563eb; transform: scale(1.15); }
+        .ai-option-label:has(input:checked) {
+            border-color: #2563eb; background: #eff6ff; color: #1d4ed8;
+        }
+
+        /* Post-Submission Styles */
+        .ai-option-label.ans-correct {
+            border-color: #22c55e !important;
+            background: #dcfce7 !important;
+            color: #14532d !important;
+            font-weight: 700;
+        }
+        .ai-option-label.ans-wrong {
+            border-color: #ef4444 !important;
+            background: #fee2e2 !important;
+            color: #7f1d1d !important;
+        }
+
+        .ai-q-explanation-box {
+            display: none;
+            margin-top: 14px;
+            padding: 14px 16px;
+            background: #ffffff;
+            border-left: 4px solid #2563eb;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .ai-exam-footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            padding: 18px 24px;
+            border-radius: 14px;
+            margin-top: 24px;
+        }
+
+        /* Result Scorecard Banner */
+        .ai-scorecard {
+            display: none;
+            background: #fff;
+            border: 2px solid #2563eb;
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 10px 30px rgba(37,99,235,0.1);
+        }
+        .scorecard-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .scorecard-circle {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #fff; font-size: 1.5rem; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 18px rgba(37,99,235,0.3);
+        }
+        .scorecard-info h3 { margin: 0 0 4px; font-size: 1.3rem; font-weight: 800; color: #1e293b; }
+        .scorecard-info p  { margin: 0; color: #64748b; font-size: 0.875rem; }
+
+        .scorecard-metrics {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 16px; padding: 16px 0;
+            border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+        .score-stat span { font-size: 0.78rem; color: #64748b; font-weight: 600; display: block; }
+        .score-stat strong { font-size: 1.25rem; font-weight: 800; }
+
         .back-to-modes {
             display: inline-flex; align-items: center; gap: 6px;
-            font-size: 0.82rem; font-weight: 700; color: #3b82f6;
+            font-size: 0.85rem; font-weight: 700; color: #3b82f6;
             cursor: pointer; margin-bottom: 20px; border: none; background: none;
             padding: 0; transition: color .15s;
         }
@@ -215,11 +354,11 @@
         <main class="main-content">
             <header class="topbar">
                 <div>
-                    <h1>Generate Question Paper</h1>
-                    <p>Choose how you want to prepare — from PYQ bank or powered by Gemini AI</p>
+                    <h1>Generate Examination Paper</h1>
+                    <p>Practice with downloaded company placement papers or generate adaptive tests with Gemini AI</p>
                 </div>
                 <div class="topbar-actions">
-                    <a href="pyq.html" class="btn-secondary-link">📚 Browse B.Tech PYQs &rarr;</a>
+                    <a href="pyq.html" class="btn-secondary-link">📚 Browse Downloaded PYQ PDFs &rarr;</a>
                 </div>
             </header>
 
@@ -232,14 +371,14 @@
                         <div class="mode-card" onclick="selectMode('pyq')" id="card-pyq">
                             <span class="mode-card-icon">📋</span>
                             <h3>Generate by PYQ</h3>
-                            <p>Practice with our curated MCQ bank based on real B.Tech placement and semester exam questions. Role-based, timed, and fully evaluated.</p>
+                            <p>Practice with real questions from downloaded company placement papers (Google, Amazon, Microsoft, TCS, Infosys, Wipro) &amp; core subjects. Timed MCQ exam with scoring.</p>
                         </div>
                         <!-- Option B: Generate by AI -->
                         <div class="mode-card" onclick="selectMode('ai')" id="card-ai">
                             <span class="mode-badge">✨ Gemini AI</span>
                             <span class="mode-card-icon">🤖</span>
                             <h3>Generate by AI</h3>
-                            <p>Let Gemini AI create personalized questions targeting your weak areas from past exams, or any custom topic you choose.</p>
+                            <p>Generate interactive MCQ tests using Gemini AI. Target your weak areas from past exams or choose any company track / topic with automated evaluation.</p>
                         </div>
                     </div>
                 </div>
@@ -252,18 +391,28 @@
                     <div class="config-card" id="configCard">
                         <div class="card-head">
                             <h2>Configure Exam Settings</h2>
-                            <span class="sub-pill">Interactive MCQ Mode · PYQ Bank</span>
+                            <span class="sub-pill">Interactive MCQ Mode · Downloaded PYQ Bank</span>
                         </div>
 
                         <div class="form-grid">
-                            <!-- Role Selection -->
+                            <!-- Role & Company Selection -->
                             <div class="field">
-                                <label for="roleSelector">Select Job Role</label>
+                                <label for="roleSelector">Select Placement Paper / Track</label>
                                 <select id="roleSelector" class="form-control" onchange="onRoleChanged(this.value)">
-                                    <option value="frontend">Frontend Developer (React / Web)</option>
-                                    <option value="backend">Backend Developer (Node.js / Express / APIs)</option>
-                                    <option value="java">Java Developer (Core Java / OOPs / Collections)</option>
-                                    <option value="python">Python Developer (Basics / Django / DSA)</option>
+                                    <optgroup label="🏢 Downloaded Company Placement PYQs">
+                                        <option value="google" selected>Google Campus Placement Paper (2026)</option>
+                                        <option value="amazon">Amazon SDE Technical Placement (2026)</option>
+                                        <option value="microsoft">Microsoft Software Engineering OA (2026)</option>
+                                        <option value="tcs">TCS NQT &amp; Digital Placement Exam</option>
+                                        <option value="infosys">Infosys Specialist Programmer (SP) Exam</option>
+                                        <option value="wipro">Wipro Elite NLTH Placement Exam</option>
+                                    </optgroup>
+                                    <optgroup label="💻 Core Developer Tracks">
+                                        <option value="frontend">Frontend Developer (React / Web)</option>
+                                        <option value="backend">Backend Developer (Node.js / Express / APIs)</option>
+                                        <option value="java">Java Developer (Core Java / OOPs / Collections)</option>
+                                        <option value="python">Python Developer (Basics / Django / DSA)</option>
+                                    </optgroup>
                                 </select>
                             </div>
 
@@ -281,8 +430,8 @@
                         <!-- Role Topics -->
                         <div class="topics-area">
                             <label class="topics-label">
-                                <span>Syllabus Modules for <strong id="selectedRoleLabel">Frontend Developer</strong>:</span>
-                                <small>(Questions will be tailored to checked modules)</small>
+                                <span>Syllabus Modules for <strong id="selectedRoleLabel">Google Placement Paper (2026)</strong>:</span>
+                                <small>(Questions will be drawn according to checked modules)</small>
                             </label>
                             <div class="topics-checkboxes" id="roleTopicsContainer"></div>
                         </div>
@@ -330,7 +479,7 @@
 
                         <div class="action-footer">
                             <button type="button" class="btn-launch-exam" onclick="startGeneratedExam()">
-                                🚀 Generate Question Paper &amp; Begin Exam
+                                🚀 Start PYQ Examination &amp; Begin Timer
                             </button>
                         </div>
                     </div>
@@ -340,7 +489,7 @@
                         <div class="exam-banner">
                             <div>
                                 <span class="exam-tag">Live Assessment</span>
-                                <h2 id="examBannerTitle">Frontend Developer MCQ Exam</h2>
+                                <h2 id="examBannerTitle">Google Placement Paper Assessment</h2>
                                 <p id="examBannerMeta">5 Questions • Single Choice • Pass criteria: 70%</p>
                             </div>
                             <div class="exam-timer-box">
@@ -364,7 +513,7 @@
                             <div class="score-circle" id="scoreCircle">80%</div>
                             <div class="result-text">
                                 <h2 id="resultTitle">Assessment Completed!</h2>
-                                <p id="resultSub">Here is your AI performance breakdown</p>
+                                <p id="resultSub">Here is your automated performance breakdown</p>
                             </div>
                         </div>
 
@@ -378,101 +527,181 @@
                             <div class="alert-icon">⚠️</div>
                             <div class="alert-body">
                                 <strong>Weak Topics Flagged by Evaluation:</strong>
-                                <p id="weakListSummary">React Virtual DOM</p>
-                                <small>These weak points are now forwarded to <strong>Generate by AI</strong> for targeted practice.</small>
+                                <p id="weakListSummary">Dynamic Programming</p>
+                                <small>These weak points have been automatically saved to <strong>Generate by AI &rarr; Weak Areas</strong> for targeted practice.</small>
                             </div>
                         </div>
 
                         <div class="result-actions">
                             <a href="dashboard.html" class="btn-res btn-home">Return to Dashboard</a>
                             <a href="saved-papers.html" class="btn-res" style="background:#0284c7;color:#fff;">📂 View Saved Papers &rarr;</a>
-                            <button type="button" class="btn-res btn-ai-remedy" onclick="selectMode('ai'); goBackToModes(); setTimeout(function(){ selectMode('ai'); }, 50);">
-                                🤖 Generate AI Practice Paper &rarr;
+                            <button type="button" class="btn-res btn-ai-remedy" onclick="selectMode('ai'); setAiSubMode('weak');">
+                                🤖 Practice Weak Topics with AI &rarr;
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- ══ MODE B: GENERATE BY AI ══ -->
+                <!-- ══ MODE B: GENERATE BY AI (Interactive MCQ Test) ══ -->
                 <div id="aiModeSection" class="hidden">
                     <button class="back-to-modes" onclick="goBackToModes()">&#8592; Back to mode selection</button>
 
-                    <div class="ai-panel">
+                    <!-- AI Config Panel -->
+                    <div class="ai-panel" id="aiConfigPanel">
                         <div class="ai-panel-head">
-                            <h2>🤖 AI-Powered Paper Generator</h2>
-                            <p>Gemini AI will craft custom MCQs based on your weak areas or any topic you choose</p>
+                            <div>
+                                <h2>🤖 AI-Powered Assessment Generator</h2>
+                                <p>Custom MCQs created by Gemini AI with interactive exam evaluation and weak-area tracking</p>
+                            </div>
+                            <span class="ai-status-badge">⚡ Gemini AI Engine Ready</span>
                         </div>
 
-                        <!-- Weak Points Section -->
-                        <div class="weak-box" id="weakPointsBox">
-                            <div class="weak-box-title">⚠️ Your Detected Weak Areas (from past exams)</div>
-                            <div id="weakTagsContainer">
-                                <span class="no-weak">No weak areas detected yet — take a PYQ exam first, or enter a custom topic below.</span>
-                            </div>
-                            <small style="display:block;margin-top:10px;color:#92400e;font-size:0.75rem;">Click tags to include them in AI prompt</small>
+                        <!-- SUB-MODE SELECTOR TABS -->
+                        <div class="ai-tab-bar">
+                            <button type="button" class="ai-tab-btn active" id="tabAiWeak" onclick="setAiSubMode('weak')">
+                                🎯 Option 1: Practice by Weak Areas
+                            </button>
+                            <button type="button" class="ai-tab-btn" id="tabAiRole" onclick="setAiSubMode('role')">
+                                💼 Option 2: Practice by Role / Custom Topic
+                            </button>
                         </div>
 
-                        <!-- Form -->
-                        <div class="ai-form-grid">
-                            <div class="ai-field">
-                                <label>Target Role</label>
-                                <select id="aiRole">
-                                    <option value="frontend">Frontend Developer</option>
-                                    <option value="backend">Backend Developer</option>
-                                    <option value="java">Java Developer</option>
-                                    <option value="python">Python Developer</option>
-                                    <option value="dsa">Data Structures &amp; Algorithms</option>
-                                    <option value="dbms">Database Management (DBMS)</option>
-                                    <option value="os">Operating Systems</option>
-                                    <option value="cn">Computer Networks</option>
-                                </select>
+                        <!-- PANEL 1: BY WEAK AREAS -->
+                        <div id="aiSubPanelWeak">
+                            <div class="weak-box">
+                                <div class="weak-box-title">⚠️ Your Detected Weak Topics (from previous tests)</div>
+                                <div id="weakTagsContainer" class="weak-tags">
+                                    <span class="no-weak">No weak areas recorded yet. Take an assessment in "Generate by PYQ", or use "Practice by Role" above.</span>
+                                </div>
+                                <small style="display:block;margin-top:10px;color:#92400e;font-size:0.75rem;">Click topics to select or deselect which ones to target in this test.</small>
                             </div>
-                            <div class="ai-field">
+
+                            <div class="ai-field" style="margin-bottom: 20px;">
                                 <label>Number of Questions</label>
-                                <select id="aiQCount">
+                                <select id="aiWeakQCount">
                                     <option value="3">3 Questions</option>
                                     <option value="5" selected>5 Questions</option>
-                                    <option value="7">7 Questions</option>
                                     <option value="10">10 Questions</option>
                                 </select>
                             </div>
+
+                            <button type="button" class="btn-generate-ai" id="btnLaunchWeakAI" onclick="launchAiExam('weak')">
+                                🚀 Generate Weak Areas Remedial Exam
+                            </button>
                         </div>
 
-                        <div class="ai-topic-full">
-                            <label>Custom Topic or Focus Area (optional)</label>
-                            <input type="text" id="aiTopicInput" placeholder="e.g. React useEffect, Binary Trees, SQL Joins, Deadlocks...">
-                        </div>
+                        <!-- PANEL 2: BY ROLE / CUSTOM TOPIC -->
+                        <div id="aiSubPanelRole" class="hidden">
+                            <div class="ai-form-grid">
+                                <div class="ai-field">
+                                    <label>Select Track / Role</label>
+                                    <select id="aiRoleSelect">
+                                        <optgroup label="🏢 Placement Drives">
+                                            <option value="Google Campus Placement (2026)">Google SDE Placement Exam</option>
+                                            <option value="Amazon SDE Technical Drive">Amazon SDE Placement Exam</option>
+                                            <option value="Microsoft Software Engineering">Microsoft Technical OA</option>
+                                            <option value="TCS NQT Digital">TCS NQT Assessment</option>
+                                            <option value="Infosys Specialist Programmer">Infosys SP Assessment</option>
+                                        </optgroup>
+                                        <optgroup label="💻 Software Engineering Roles">
+                                            <option value="Frontend Development (React, JS, HTML/CSS)" selected>Frontend Developer</option>
+                                            <option value="Backend Development (Node.js, Express, APIs)">Backend Developer</option>
+                                            <option value="Java Development (OOPs, Spring Boot, Collections)">Java Developer</option>
+                                            <option value="Python Development (DSA, Django)">Python Developer</option>
+                                        </optgroup>
+                                        <optgroup label="📚 Core Computer Science">
+                                            <option value="Data Structures & Algorithms">Data Structures &amp; Algorithms</option>
+                                            <option value="Database Management Systems (DBMS, SQL)">Database Systems (DBMS)</option>
+                                            <option value="Operating Systems (Deadlocks, Virtual Memory)">Operating Systems (OS)</option>
+                                            <option value="Computer Networks (TCP/IP, Routing)">Computer Networks (CN)</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="ai-field">
+                                    <label>Number of Questions</label>
+                                    <select id="aiRoleQCount">
+                                        <option value="3">3 Questions</option>
+                                        <option value="5" selected>5 Questions</option>
+                                        <option value="10">10 Questions</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                        <div class="api-key-wrap">
-                            <label>🔑 Gemini API Key</label>
-                            <input type="password" id="geminiApiKey" placeholder="Paste your Gemini API key here (AIza...)" autocomplete="off">
-                            <div class="api-key-hint">Your key is never stored or sent to any server. Used only in this browser session for direct Gemini API calls.</div>
-                        </div>
+                            <div class="ai-topic-full">
+                                <label>Custom Focus Topic or Module (optional)</label>
+                                <input type="text" id="aiCustomTopicInput" placeholder="e.g. React useEffect & State, Binary Search Trees, SQL B+ Trees, Deadlocks...">
+                            </div>
 
-                        <button type="button" class="btn-generate-ai" id="btnGenerateAI" onclick="generateByGemini()">
-                            ✨ Generate AI-Powered Paper
-                        </button>
+                            <button type="button" class="btn-generate-ai" id="btnLaunchRoleAI" onclick="launchAiExam('role')">
+                                🚀 Generate Role Assessment Exam
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Loading Spinner -->
                     <div class="ai-loading" id="aiLoading">
                         <div class="ai-spinner"></div>
-                        <p>Gemini AI is generating your personalized paper...</p>
-                        <small style="color:#94a3b8;">This usually takes 5–10 seconds</small>
+                        <p>Gemini AI is generating your personalized MCQ exam...</p>
+                        <small style="color:#64748b;">Creating question choices, distractors, and verified technical explanations</small>
                     </div>
 
-                    <!-- AI Results -->
-                    <div class="ai-result-panel" id="aiResultPanel">
-                        <div class="ai-result-header">
-                            <h3 id="aiResultTitle">AI-Generated Paper</h3>
-                            <p id="aiResultMeta">Gemini AI · Personalized MCQs</p>
+                    <!-- Interactive MCQ Exam Stage for AI Generated Questions -->
+                    <div class="ai-exam-container" id="aiExamContainer">
+                        
+                        <!-- Result Scorecard (Shown after submit) -->
+                        <div class="ai-scorecard" id="aiScorecard">
+                            <div class="scorecard-header">
+                                <div class="scorecard-circle" id="aiScorePercent">80%</div>
+                                <div class="scorecard-info">
+                                    <h3 id="aiScorecardTitle">Exam Evaluated!</h3>
+                                    <p id="aiScorecardSub">Detailed question review with correct answers and AI explanations shown below</p>
+                                </div>
+                            </div>
+                            <div class="scorecard-metrics">
+                                <div class="score-stat">
+                                    <span>Total Questions:</span>
+                                    <strong id="aiStatTotal">5</strong>
+                                </div>
+                                <div class="score-stat">
+                                    <span>Correct:</span>
+                                    <strong id="aiStatCorrect" style="color:#16a34a;">4</strong>
+                                </div>
+                                <div class="score-stat">
+                                    <span>Incorrect:</span>
+                                    <strong id="aiStatIncorrect" style="color:#dc2626;">1</strong>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                                <button type="button" class="btn-res" style="background:#2563eb;color:#fff;" onclick="resetAiExamToConfig()">🔄 Take Another AI Exam</button>
+                                <a href="dashboard.html" class="btn-res btn-home">📊 View Dashboard</a>
+                                <a href="saved-papers.html" class="btn-res" style="background:#0284c7;color:#fff;">📂 View in Saved Papers &rarr;</a>
+                            </div>
                         </div>
-                        <div class="ai-questions-list" id="aiQuestionsList"></div>
-                        <div class="ai-actions">
-                            <button class="btn-retake" onclick="resetAiPanel()">↩ Generate Another</button>
-                            <button class="btn-to-exam" onclick="switchToPyqMode()">📋 Take Timed Exam with PYQ Bank</button>
+
+                        <!-- Live Assessment Banner -->
+                        <div class="ai-exam-banner" id="aiLiveExamBanner">
+                            <div>
+                                <span class="exam-tag" style="background:#3b82f6;color:#fff;">AI Interactive Assessment</span>
+                                <h2 id="aiLiveExamTitle">AI Technical Assessment</h2>
+                                <p id="aiLiveExamMeta">Answer each question and click 'Submit Exam' to calculate your score</p>
+                            </div>
                         </div>
+
+                        <!-- Questions Form -->
+                        <form id="aiInteractiveExamForm" onsubmit="submitAiExam(event)">
+                            <div id="aiExamQuestionsDeck">
+                                <!-- Dynamically injected MCQ question cards -->
+                            </div>
+
+                            <div class="ai-exam-footer-bar" id="aiExamSubmitBar">
+                                <button type="button" class="btn-cancel-exam" onclick="resetAiExamToConfig()">Cancel Assessment</button>
+                                <button type="submit" class="btn-evaluate" id="btnSubmitAiExam">
+                                    🏁 Submit Exam &amp; Check Score
+                                </button>
+                            </div>
+                        </form>
                     </div>
+
                 </div>
 
             </div>
@@ -483,6 +712,9 @@
     <script>
         // ── MODE SWITCHING ─────────────────────────────────────
         var currentMode = null;
+        var currentAiSubMode = 'weak';
+        var activeAiQuestionsList = [];
+        var isAiExamSubmitted = false;
 
         function selectMode(mode) {
             currentMode = mode;
@@ -492,7 +724,6 @@
 
             if (mode === 'pyq') {
                 document.getElementById('pyqModeSection').classList.remove('hidden');
-                // Reset to config stage
                 document.getElementById('configCard').classList.remove('hidden');
                 document.getElementById('examStage').classList.add('hidden');
                 document.getElementById('resultStage').classList.add('hidden');
@@ -507,10 +738,29 @@
             document.getElementById('modeChooserSection').classList.remove('hidden');
             document.getElementById('pyqModeSection').classList.add('hidden');
             document.getElementById('aiModeSection').classList.add('hidden');
+            resetAiExamToConfig();
         }
 
-        function switchToPyqMode() {
-            selectMode('pyq');
+        // Sub-mode tabs in AI
+        function setAiSubMode(sub) {
+            currentAiSubMode = sub;
+            var tabWeak = document.getElementById('tabAiWeak');
+            var tabRole = document.getElementById('tabAiRole');
+            var panelWeak = document.getElementById('aiSubPanelWeak');
+            var panelRole = document.getElementById('aiSubPanelRole');
+
+            if (sub === 'weak') {
+                tabWeak.classList.add('active');
+                tabRole.classList.remove('active');
+                panelWeak.classList.remove('hidden');
+                panelRole.classList.add('hidden');
+                loadWeakPoints();
+            } else {
+                tabRole.classList.add('active');
+                tabWeak.classList.remove('active');
+                panelRole.classList.remove('hidden');
+                panelWeak.classList.add('hidden');
+            }
         }
 
         // ── WEAK POINTS LOADER ─────────────────────────────────
@@ -520,173 +770,285 @@
             if (!container) return;
 
             if (weak.length === 0) {
-                container.innerHTML = '<span class="no-weak">No weak areas detected yet. Take a PYQ exam first, or enter a custom topic below.</span>';
+                container.innerHTML = '<span class="no-weak">No weak areas recorded yet. Take an exam in <strong>Generate by PYQ</strong> to diagnose weak areas, or switch to <strong>Option 2: Practice by Role</strong> above.</span>';
                 return;
             }
 
             var html = '';
             weak.forEach(function(wt) {
-                html += '<span class="weak-tag" onclick="toggleWeakTag(this, \'' + wt.replace(/'/g, "\\'") + '\')">' + wt + '</span>';
+                html += '<span class="weak-tag selected-tag" onclick="toggleWeakTag(this, \'' + wt.replace(/'/g, "\\'") + '\')">' + wt + '</span>';
             });
             container.innerHTML = html;
         }
 
-        function toggleWeakTag(el, topic) {
+        function toggleWeakTag(el) {
             el.classList.toggle('selected-tag');
-            var input = document.getElementById('aiTopicInput');
-            var current = input.value.trim();
-            if (el.classList.contains('selected-tag')) {
-                input.value = current ? current + ', ' + topic : topic;
-            } else {
-                input.value = current.replace(new RegExp(',?\\s*' + topic.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), '').replace(/^,\s*/, '').trim();
-            }
         }
 
-        // ── GEMINI AI GENERATOR ────────────────────────────────
-        async function generateByGemini() {
-            var apiKey = document.getElementById('geminiApiKey').value.trim();
-            var role    = document.getElementById('aiRole').value;
-            var count   = parseInt(document.getElementById('aiQCount').value) || 5;
-            var topic   = document.getElementById('aiTopicInput').value.trim();
-            var weakTags = Array.from(document.querySelectorAll('.weak-tag.selected-tag')).map(function(t){ return t.textContent; });
+        // ── LAUNCH AI EXAM ─────────────────────────────────────
+        async function launchAiExam(source) {
+            var topic = '';
+            var count = 5;
+            var roleLabel = 'Technical Assessment';
 
-            var roleMap = {
-                frontend: 'Frontend Web Development (HTML, CSS, JavaScript, React)',
-                backend: 'Backend Development (Node.js, Express, REST APIs)',
-                java: 'Java Programming (OOPs, Collections, Spring Boot)',
-                python: 'Python Programming (Data Types, Django, DSA)',
-                dsa: 'Data Structures and Algorithms (Arrays, Trees, Graphs, DP)',
-                dbms: 'Database Management Systems (SQL, Normalization, Transactions)',
-                os: 'Operating Systems (Processes, Deadlocks, Memory Management)',
-                cn: 'Computer Networks (OSI Model, TCP/IP, Routing, DNS)'
-            };
+            if (source === 'weak') {
+                var selectedTags = Array.from(document.querySelectorAll('.weak-tag.selected-tag')).map(function(t){ return t.textContent.trim(); });
+                count = parseInt(document.getElementById('aiWeakQCount').value) || 5;
+                if (selectedTags.length === 0) {
+                    var allWeak = JSON.parse(localStorage.getItem('prepAiWeakTopics') || '[]');
+                    if (allWeak.length === 0) {
+                        alert("No weak areas detected yet! Please switch to 'Option 2: Practice by Role / Custom Topic' to choose a track.");
+                        setAiSubMode('role');
+                        return;
+                    }
+                    topic = allWeak.join(', ');
+                } else {
+                    topic = selectedTags.join(', ');
+                }
+                roleLabel = 'Weak Areas Remedial: ' + topic;
+            } else {
+                var role = document.getElementById('aiRoleSelect').value;
+                var custom = document.getElementById('aiCustomTopicInput').value.trim();
+                count = parseInt(document.getElementById('aiRoleQCount').value) || 5;
+                topic = custom ? (role + ' - ' + custom) : role;
+                roleLabel = topic;
+            }
 
-            var roleName = roleMap[role] || role;
-            var focusArea = topic || (weakTags.length ? weakTags.join(', ') : roleName);
-
-            var prompt = 'You are an expert B.Tech placement exam question creator. Generate exactly ' + count + ' multiple-choice questions (MCQs) for a B.Tech student interview exam.\n\nSubject / Role: ' + roleName + '\nFocus topics: ' + focusArea + '\n\nRules:\n1. Each question must have exactly 4 options (A, B, C, D).\n2. Only one option is correct.\n3. Include a brief explanation (1-2 sentences) for the correct answer.\n4. Questions should be of medium difficulty suitable for campus placement rounds.\n5. Return ONLY valid JSON in this exact format, no markdown, no extra text:\n[\n  {\n    "question": "Question text here?",\n    "options": ["Option A", "Option B", "Option C", "Option D"],\n    "correct": 0,\n    "explanation": "Brief explanation of why this is correct."\n  }\n]';
+            var prompt = 'You are an expert B.Tech campus placement technical examiner. Generate exactly ' + count + ' high-quality multiple-choice questions (MCQs) for an engineering interview exam.\n\n' +
+                'Focus Subject / Role / Weak Points: ' + topic + '\n\n' +
+                'Rules:\n' +
+                '1. Each question must have exactly 4 choices (A, B, C, D).\n' +
+                '2. Only ONE choice is correct.\n' +
+                '3. "correct" MUST be the 0-indexed integer of the right answer (0 for A, 1 for B, 2 for C, 3 for D).\n' +
+                '4. Provide a clear, technical explanation (1-2 sentences) of why the answer is correct.\n' +
+                '5. Return ONLY a valid JSON array matching this exact format, with NO Markdown and NO extra commentary:\n' +
+                '[\n  {\n    "question": "Question text?",\n    "topic": "Topic Name",\n    "options": ["Option A", "Option B", "Option C", "Option D"],\n    "correct": 0,\n    "explanation": "Why option A is correct."\n  }\n]';
 
             // Show loading
-            document.getElementById('btnGenerateAI').disabled = true;
+            document.getElementById('aiConfigPanel').classList.add('hidden');
+            document.getElementById('aiExamContainer').style.display = 'none';
             document.getElementById('aiLoading').style.display = 'block';
-            document.getElementById('aiResultPanel').style.display = 'none';
 
             try {
-                var rawText = '';
+                var resp = await fetch('/api/ai/gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
 
-                // Strategy 1: Try via backend /api/ai/gemini
-                try {
-                    var serverResp = await fetch('/api/ai/gemini', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ prompt: prompt, apiKey: apiKey })
-                    });
-                    if (serverResp.ok) {
-                        var serverData = await serverResp.json();
-                        if (serverData.success && serverData.text) {
-                            rawText = serverData.text;
-                        }
-                    }
-                } catch (sErr) {
-                    console.log('Server proxy fetch skipped, attempting direct API...', sErr);
+                if (!resp.ok) {
+                    var errData = await resp.json().catch(function(){ return {}; });
+                    throw new Error(errData.message || 'Server error ' + resp.status);
                 }
 
-                // Strategy 2: If server proxy did not return text, try direct client fetch
-                if (!rawText) {
-                    if (!apiKey) {
-                        throw new Error('Please enter your Gemini API key, or ensure the server .env is configured.');
-                    }
-                    var models = ['gemini-2.5-flash', 'gemini-flash-latest'];
-                    var lastClientErr = '';
-                    for (var m = 0; m < models.length; m++) {
-                        try {
-                            var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + models[m] + ':generateContent?key=' + apiKey;
-                            var resp = await fetch(url, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    contents: [{ parts: [{ text: prompt }] }],
-                                    generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
-                                })
-                            });
-                            if (resp.ok) {
-                                var data = await resp.json();
-                                rawText = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] ? data.candidates[0].content.parts[0].text : '';
-                                if (rawText) break;
-                            } else {
-                                var errData = await resp.json().catch(function(){ return {}; });
-                                lastClientErr = (errData.error && errData.error.message) ? errData.error.message : 'HTTP ' + resp.status;
-                            }
-                        } catch (cErr) {
-                            lastClientErr = cErr.message;
-                        }
-                    }
-                    if (!rawText) throw new Error(lastClientErr || 'Unable to generate questions from Gemini.');
-                }
-
-                // Extract JSON from response (strip markdown code fences if present)
-                var jsonMatch = rawText.match(/\[[\s\S]*\]/);
-                if (!jsonMatch) throw new Error('AI did not return valid JSON format. Raw output was: ' + rawText.slice(0, 100));
+                var data = await resp.json();
+                var text = data.text || '';
+                var jsonMatch = text.match(/\[[\s\S]*\]/);
+                if (!jsonMatch) throw new Error('AI response did not contain a valid JSON array.');
                 var questions = JSON.parse(jsonMatch[0]);
 
-                renderAiResults(questions, roleName, focusArea, count);
+                if (!Array.isArray(questions) || questions.length === 0) {
+                    throw new Error('No questions returned by AI engine.');
+                }
+
+                activeAiQuestionsList = questions;
+                renderAiInteractiveExam(questions, roleLabel);
 
             } catch (err) {
                 document.getElementById('aiLoading').style.display = 'none';
-                document.getElementById('btnGenerateAI').disabled = false;
-                var msg = err.message || 'Unknown error';
-                alert('⚠️ Gemini AI Generation Notice:\n\n' + msg + '\n\nPlease check your API key and try again.');
+                document.getElementById('aiConfigPanel').classList.remove('hidden');
+                alert('⚠️ AI Generation Notice:\n\n' + (err.message || err) + '\n\nPlease check server status and try again.');
             }
         }
 
-        function renderAiResults(questions, roleName, focusArea, count) {
+        // Render AI questions as real MCQ test (answers HIDDEN)
+        function renderAiInteractiveExam(questions, title) {
             document.getElementById('aiLoading').style.display = 'none';
-            document.getElementById('btnGenerateAI').disabled = false;
+            document.getElementById('aiScorecard').style.display = 'none';
+            document.getElementById('aiLiveExamBanner').style.display = 'flex';
+            document.getElementById('aiExamSubmitBar').style.display = 'flex';
+            document.getElementById('btnSubmitAiExam').disabled = false;
+            isAiExamSubmitted = false;
 
-            document.getElementById('aiResultTitle').textContent = '✨ ' + roleName + ' — AI Paper';
-            document.getElementById('aiResultMeta').textContent = count + ' Questions · Focus: ' + focusArea + ' · Powered by Gemini AI';
+            document.getElementById('aiLiveExamTitle').textContent = title;
+            document.getElementById('aiLiveExamMeta').textContent = questions.length + ' Questions • Single Choice • Select an option for each question and submit';
 
             var html = '';
-            questions.forEach(function(q, i) {
-                var optsHtml = '';
-                (q.options || []).forEach(function(opt, oi) {
-                    var cls = (oi === q.correct) ? 'ai-opt correct-opt' : 'ai-opt';
-                    var prefix = (oi === q.correct) ? '✓ ' : (String.fromCharCode(65 + oi) + '. ');
-                    optsHtml += '<div class="' + cls + '">' + prefix + opt + '</div>';
+            questions.forEach(function(q, qIdx) {
+                var optionsHtml = '';
+                (q.options || []).forEach(function(opt, optIdx) {
+                    optionsHtml += '<label class="ai-option-label" id="ai_opt_lbl_' + qIdx + '_' + optIdx + '">' +
+                        '<input type="radio" name="ai_q_' + qIdx + '" value="' + optIdx + '" required> ' +
+                        '<span>' + String.fromCharCode(65 + optIdx) + '. ' + escapeHtml(opt) + '</span>' +
+                    '</label>';
                 });
-                html += '<div class="ai-q-card">' +
-                    '<div class="ai-q-num">Question ' + (i+1) + ' of ' + questions.length + '</div>' +
-                    '<div class="ai-q-text">' + (q.question || q.q || '') + '</div>' +
-                    optsHtml +
-                    '<div class="ai-explain">💡 ' + (q.explanation || '') + '</div>' +
+
+                html += '<div class="ai-mcq-card" id="ai_card_' + qIdx + '">' +
+                    '<div class="ai-mcq-head">' +
+                        '<span class="ai-mcq-num">Question ' + (qIdx + 1) + ' of ' + questions.length + '</span>' +
+                        '<span class="ai-mcq-topic">' + escapeHtml(q.topic || 'Assessment') + '</span>' +
+                    '</div>' +
+                    '<div class="ai-mcq-question">' + escapeHtml(q.question) + '</div>' +
+                    '<div class="ai-options-deck">' + optionsHtml + '</div>' +
+                    '<div class="ai-q-explanation-box" id="ai_exp_' + qIdx + '">' +
+                        '<strong>💡 AI Explanation:</strong> ' + escapeHtml(q.explanation || 'Verified correct concept.') +
+                    '</div>' +
                 '</div>';
             });
 
-            document.getElementById('aiQuestionsList').innerHTML = html;
-            document.getElementById('aiResultPanel').style.display = 'block';
-
-            // Save to weak topics tracking
-            var topic = document.getElementById('aiTopicInput').value.trim();
-            if (topic) {
-                var weak = JSON.parse(localStorage.getItem('prepAiWeakTopics') || '[]');
-                topic.split(',').forEach(function(t) {
-                    var trimmed = t.trim();
-                    if (trimmed && weak.indexOf(trimmed) === -1) weak.push(trimmed);
-                });
-                localStorage.setItem('prepAiWeakTopics', JSON.stringify(weak));
-            }
+            document.getElementById('aiExamQuestionsDeck').innerHTML = html;
+            document.getElementById('aiExamContainer').style.display = 'block';
 
             setTimeout(function() {
-                document.getElementById('aiResultPanel').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('aiExamContainer').scrollIntoView({ behavior: 'smooth' });
             }, 100);
         }
 
-        function resetAiPanel() {
-            document.getElementById('aiResultPanel').style.display = 'none';
-            document.getElementById('aiLoading').style.display = 'none';
-            document.getElementById('aiTopicInput').value = '';
-            document.querySelectorAll('.weak-tag').forEach(function(t){ t.classList.remove('selected-tag'); });
+        // Evaluate AI Interactive Exam on Submit
+        function submitAiExam(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            if (isAiExamSubmitted) return;
+
+            var total = activeAiQuestionsList.length;
+            var correctCount = 0;
+            var incorrectCount = 0;
+            var missedTopics = [];
+            var answeredQuestionsList = [];
+
+            activeAiQuestionsList.forEach(function(q, qIdx) {
+                var selected = document.querySelector('input[name="ai_q_' + qIdx + '"]:checked');
+                var selectedVal = selected ? parseInt(selected.value) : -1;
+                var isRight = (selectedVal === q.correct);
+
+                var card = document.getElementById('ai_card_' + qIdx);
+                var expBox = document.getElementById('ai_exp_' + qIdx);
+
+                if (isRight) {
+                    correctCount++;
+                    if (card) card.classList.add('res-correct');
+                } else {
+                    incorrectCount++;
+                    if (card) card.classList.add('res-incorrect');
+                    var topicName = q.topic || 'General Technical';
+                    if (missedTopics.indexOf(topicName) === -1) {
+                        missedTopics.push(topicName);
+                    }
+                }
+
+                // Highlight options
+                (q.options || []).forEach(function(opt, optIdx) {
+                    var lbl = document.getElementById('ai_opt_lbl_' + qIdx + '_' + optIdx);
+                    if (!lbl) return;
+                    if (optIdx === q.correct) {
+                        lbl.classList.add('ans-correct');
+                        lbl.innerHTML += ' <strong style="color:#166534;margin-left:auto;">✓ Correct Answer</strong>';
+                    } else if (optIdx === selectedVal && !isRight) {
+                        lbl.classList.add('ans-wrong');
+                        lbl.innerHTML += ' <strong style="color:#dc2626;margin-left:auto;">✗ Your Choice</strong>';
+                    }
+                });
+
+                // Reveal explanation
+                if (expBox) expBox.style.display = 'block';
+
+                answeredQuestionsList.push({
+                    qNo: qIdx + 1,
+                    topic: q.topic || 'Technical Topic',
+                    question: q.question,
+                    options: q.options,
+                    selectedOption: selectedVal,
+                    correctOption: q.correct,
+                    isCorrect: isRight,
+                    explanation: q.explanation || 'Verified concept.'
+                });
+            });
+
+            isAiExamSubmitted = true;
+            var scorePct = Math.round((correctCount / total) * 100);
+            var isPassed = scorePct >= 70;
+
+            // Show Scorecard
+            document.getElementById('aiScorePercent').textContent = scorePct + '%';
+            document.getElementById('aiStatTotal').textContent = total;
+            document.getElementById('aiStatCorrect').textContent = correctCount;
+            document.getElementById('aiStatIncorrect').textContent = incorrectCount;
+            document.getElementById('aiScorecardTitle').textContent = isPassed ? '🎉 Great Job! Assessment Passed' : '⚠️ Assessment Needs Practice';
+            document.getElementById('aiScorecardSub').textContent = isPassed 
+                ? 'Strong understanding shown. Detailed question analysis and solutions are displayed below.'
+                : 'Review the explanations below. Mistaken topics have been automatically added to your weak areas list.';
+
+            document.getElementById('aiScorecard').style.display = 'block';
+            document.getElementById('aiExamSubmitBar').style.display = 'none';
+
+            // Update user weak topics in localStorage
+            if (missedTopics.length > 0) {
+                var currentWeak = JSON.parse(localStorage.getItem('prepAiWeakTopics') || '[]');
+                missedTopics.forEach(function(wt) {
+                    if (currentWeak.indexOf(wt) === -1) currentWeak.push(wt);
+                });
+                localStorage.setItem('prepAiWeakTopics', JSON.stringify(currentWeak));
+            }
+
+            // Save Attempt to localStorage & Backend
+            var titleText = document.getElementById('aiLiveExamTitle').textContent || 'AI Custom Assessment';
+            var attemptRecord = {
+                id: 'ai-attempt-' + Date.now(),
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                role: titleText,
+                level: 'AI Adaptive',
+                score: scorePct,
+                total: total,
+                correct: correctCount,
+                weakTopics: missedTopics
+            };
+
+            var history = JSON.parse(localStorage.getItem('prepAiExamHistory') || '[]');
+            history.push(attemptRecord);
+            localStorage.setItem('prepAiExamHistory', JSON.stringify(history));
+
+            // Save full paper to prepAiSavedPapers
+            var savedPaper = {
+                id: 'paper-ai-' + Date.now(),
+                title: titleText,
+                role: 'AI Adaptive Assessment',
+                level: 'Interactive AI',
+                topics: missedTopics.length > 0 ? missedTopics : ['AI Generated Topics'],
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                score: scorePct,
+                totalQuestions: total,
+                correctCount: correctCount,
+                weakTopics: missedTopics,
+                questions: answeredQuestionsList
+            };
+
+            var savedPapers = JSON.parse(localStorage.getItem('prepAiSavedPapers') || '[]');
+            savedPapers.unshift(savedPaper);
+            localStorage.setItem('prepAiSavedPapers', JSON.stringify(savedPapers));
+
+            // Sync to backend
+            fetch('/api/papers/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(savedPaper)
+            }).catch(function(){});
+
+            document.getElementById('aiScorecard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetAiExamToConfig() {
+            document.getElementById('aiExamContainer').style.display = 'none';
+            document.getElementById('aiConfigPanel').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.toString()
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
         }
 
         function logout() {
@@ -700,25 +1062,6 @@
             if (params.get('mode') === 'ai') {
                 selectMode('ai');
             }
-
-            // Automatically check and load configured Gemini API key from backend
-            fetch('/api/ai/config')
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data && data.configured && data.key) {
-                        var keyInput = document.getElementById('geminiApiKey');
-                        if (keyInput && !keyInput.value) {
-                            keyInput.value = data.key;
-                            var hint = document.querySelector('.api-key-hint');
-                            if (hint) {
-                                hint.innerHTML = '<span style="color:#10b981;font-weight:700;">✓ Active Gemini API key connected</span> (' + data.maskedKey + '). Ready for instant question generation.';
-                            }
-                        }
-                    }
-                })
-                .catch(function(e) {
-                    console.log('AI config check silent notice:', e);
-                });
         });
     </script>
 </body>

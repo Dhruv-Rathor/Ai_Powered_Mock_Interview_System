@@ -1,11 +1,15 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Directory containing downloaded PYQ PDFs (placement papers)
+const PYQ_PDF_DIR = path.resolve(__dirname, '..', 'pyqs');
 
 // Middleware
 app.use(cors());
@@ -14,6 +18,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static frontend files (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname)));
+
+// Serve downloaded placement PYQ PDFs statically
+if (fs.existsSync(PYQ_PDF_DIR)) {
+    app.use('/pyqs-pdf', express.static(PYQ_PDF_DIR));
+}
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017';
 const DB_NAME = 'mockprep_ai_db';
@@ -419,13 +428,44 @@ app.post('/api/ai/evaluate-answer', (req, res) => {
     });
 });
 
-// 9. Gemini AI Config & Key Status Endpoint
+// 9. Downloaded PYQ PDFs List
+app.get('/api/pyqs/downloaded-pdfs', (req, res) => {
+    try {
+        if (!fs.existsSync(PYQ_PDF_DIR)) {
+            return res.json({ success: true, count: 0, files: [] });
+        }
+        const filenames = fs.readdirSync(PYQ_PDF_DIR).filter(f => f.toLowerCase().endsWith('.pdf'));
+        const files = filenames.map(f => {
+            const stat = fs.statSync(path.join(PYQ_PDF_DIR, f));
+            const cleanName = f.replace('.pdf', '');
+            const parts = cleanName.split('-');
+            const rawCompany = parts[0];
+            const company = rawCompany.charAt(0).toUpperCase() + rawCompany.slice(1);
+            const year = parts[parts.length - 1] || '2026';
+            return {
+                id: 'pdf-' + cleanName,
+                filename: f,
+                company: company,
+                title: `${company} Placement Question Paper (${year})`,
+                subject: 'Campus Technical Placement',
+                year: year,
+                difficulty: 'Placement Standard',
+                size: (stat.size / 1024).toFixed(1) + ' KB',
+                url: `/pyqs-pdf/${encodeURIComponent(f)}`
+            };
+        });
+        res.json({ success: true, count: files.length, files });
+    } catch (e) {
+        res.status(500).json({ success: false, error: e.message });
+    }
+});
+
+// 10. Gemini AI Status Endpoint (Frontend doesn't need the raw key; backend handles it)
 app.get('/api/ai/config', (req, res) => {
     const key = process.env.GEMINI_API_KEY || '';
     res.json({
         configured: !!key,
-        maskedKey: key ? (key.slice(0, 6) + '...' + key.slice(-4)) : '',
-        key: key
+        status: key ? "Active & Connected via Backend" : "Not configured"
     });
 });
 
