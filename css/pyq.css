@@ -263,6 +263,30 @@
     box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
 }
 
+/* PDF View Button (replaces download) */
+.btn-pyq-view-pdf {
+    flex: 1;
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: #ffffff;
+    border: none;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+}
+.btn-pyq-view-pdf:hover {
+    opacity: 0.9;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+    transform: translateY(-1px);
+}
+
 /* Empty State */
 .empty-pyq-state {
     grid-column: 1 / -1;

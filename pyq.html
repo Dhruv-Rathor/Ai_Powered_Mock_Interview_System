@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B.Tech Previous Year Questions (PYQ) & Interview Papers</title>
+    <title>B.Tech PYQ Repository – MockAI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 <body>
 
     <div class="app-layout">
-        <!-- SIDEBAR NAVIGATION -->
+        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-brand">
                 <span class="brand-icon">⚡</span>
@@ -28,10 +28,6 @@
                 <a href="generate-paper.html" class="menu-item">
                     <span class="menu-icon">📄</span>
                     <span>Generate Paper</span>
-                </a>
-                <a href="paper-by-ai.html" class="menu-item">
-                    <span class="menu-icon">🤖</span>
-                    <span>Paper by AI</span>
                 </a>
                 <a href="pyq.html" class="menu-item active">
                     <span class="menu-icon">📚</span>
@@ -56,11 +52,10 @@
 
         <!-- MAIN PYQ WORKSPACE -->
         <main class="main-content">
-            
             <header class="topbar">
                 <div>
                     <h1>B.Tech Previous Year Questions (PYQ) Repository</h1>
-                    <p>Search, practice, and download authentic campus placement and semester exam papers</p>
+                    <p>Search and view authentic campus placement and semester exam papers</p>
                 </div>
                 <div class="topbar-actions">
                     <a href="generate-paper.html" class="btn-secondary-link">+ Take Timed Mock Test</a>
@@ -69,30 +64,27 @@
 
             <div class="content-body">
 
-                <!-- PYQ Hero Banner with One-Click Complete Download -->
+                <!-- PYQ Hero Banner -->
                 <div class="pyq-hero">
                     <div>
-                        <h2>Engineering Placement & Semester Papers</h2>
-                        <p>Curated previous year papers for TCS, Infosys, Amazon, Wipro, and Core B.Tech subjects (DSA, OS, DBMS, Networks, Java). All papers include verified solutions and code snippets.</p>
+                        <h2>Engineering Placement &amp; Semester Papers</h2>
+                        <p>Curated previous year papers for TCS, Infosys, Amazon, Wipro, and Core B.Tech subjects (DSA, OS, DBMS, Networks, Java). All papers include verified solutions and explanations.</p>
                     </div>
-                    <button type="button" class="btn-bundle-download" onclick="downloadAllPyqsBundle()">
-                        <span>📦 Download All PYQs (Mega Bundle)</span>
-                    </button>
                 </div>
 
-                <!-- Search & Filters Bar -->
+                <!-- Search & Filters -->
                 <div class="pyq-filter-bar">
                     <div class="search-box-wrap">
                         <span class="search-icon">🔍</span>
-                        <input type="text" id="pyqSearchInput" class="pyq-search-input" 
-                               placeholder="Search questions, subjects (e.g. 'Deadlock', 'TCS', 'SQL', 'Tree')..." 
+                        <input type="text" id="pyqSearchInput" class="pyq-search-input"
+                               placeholder="Search questions, subjects (e.g. 'Deadlock', 'TCS', 'SQL', 'Tree')..."
                                oninput="filterPyqs()">
                     </div>
 
                     <select id="pyqSubjectFilter" class="filter-select" onchange="filterPyqs()">
-                        <option value="all">All Subjects & Tracks</option>
+                        <option value="all">All Subjects &amp; Tracks</option>
                         <option value="Company Placement">Company Campus Placements</option>
-                        <option value="Data Structures & Algorithms">Data Structures & Algorithms (DSA)</option>
+                        <option value="Data Structures &amp; Algorithms">Data Structures &amp; Algorithms (DSA)</option>
                         <option value="Operating Systems">Operating Systems (OS)</option>
                         <option value="Database Management Systems">Database Systems (DBMS)</option>
                         <option value="Computer Networks">Computer Networks (CN)</option>
@@ -111,7 +103,7 @@
 
                 <div class="results-meta-row">
                     <span id="pyqResultsCount">Loading papers...</span>
-                    <span>💡 Tip: Click <strong>Download Paper</strong> for an offline printable study document.</span>
+                    <span>💡 Tip: Click <strong>View PDF</strong> to open the full paper in a printable view.</span>
                 </div>
 
                 <!-- PYQ Cards Grid -->
@@ -140,8 +132,8 @@
 
             <div class="modal-footer-bar">
                 <button type="button" class="btn-pyq-preview" onclick="closePyqModal()">Close Preview</button>
-                <button type="button" class="btn-pyq-download" id="modalDownloadBtn">
-                    📥 Download This Paper (.txt)
+                <button type="button" class="btn-pyq-view-pdf" id="modalViewPdfBtn" onclick="openCurrentPaperAsPdf()">
+                    📄 Open as PDF View
                 </button>
             </div>
         </div>

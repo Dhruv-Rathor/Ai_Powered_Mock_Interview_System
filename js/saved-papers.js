@@ -277,9 +277,6 @@ function renderSavedCards(papers) {
                     <button type="button" class="btn-review-paper" onclick="openReviewModal('${paper.id}')">
                         🔍 Review Paper Details
                     </button>
-                    <button type="button" class="btn-download-record" onclick="downloadSavedReport('${paper.id}')" title="Download Graded Paper">
-                        📥 Download
-                    </button>
                     <button type="button" class="btn-delete-paper" onclick="deleteSavedPaper('${paper.id}')" title="Delete from history">
                         🗑️
                     </button>
@@ -393,10 +390,6 @@ function openReviewModal(paperId) {
     }
 
     container.innerHTML = html;
-
-    document.getElementById('reviewModalDownloadBtn').onclick = function() {
-        downloadSavedReport(paper.id);
-    };
 
     document.getElementById('reviewPaperModal').classList.remove('hidden');
 }

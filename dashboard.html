@@ -28,11 +28,6 @@
                     <span class="menu-icon">📄</span>
                     <span>Generate Paper</span>
                 </a>
-                <a href="paper-by-ai.html" class="menu-item">
-                    <span class="menu-icon">🤖</span>
-                    <span>Paper by AI</span>
-                    <span class="menu-badge" id="weakBadgeCount">0 Weak</span>
-                </a>
                 <a href="pyq.html" class="menu-item">
                     <span class="menu-icon">📚</span>
                     <span>B.Tech PYQ Bank</span>
@@ -64,7 +59,7 @@
                     <p>Track your assessment scores, weak points, and AI-recommended study plans</p>
                 </div>
                 <div class="topbar-actions" style="display:flex; gap:10px;">
-                    <a href="pyq.html" class="btn-primary-action" style="background:#10b981;">📚 Download PYQs</a>
+                    <a href="pyq.html" class="btn-primary-action" style="background:#10b981;">📚 Browse PYQs</a>
                     <a href="generate-paper.html" class="btn-primary-action">+ Take Mock Exam</a>
                 </div>
             </header>
@@ -124,20 +119,20 @@
                 <!-- 2 COLUMN SPLIT: WEAK AREAS ACTION + ATTEMPTS TABLE -->
                 <div class="dashboard-grid">
 
-                    <!-- Weak Areas & Paper By AI Gateway -->
+                    <!-- Weak Areas & Generate by AI Gateway -->
                     <div class="card weak-areas-card">
                         <div class="card-title">
                             <h3>🔍 Identified Weak Areas</h3>
-                            <a href="paper-by-ai.html" class="link-ai-paper">Fix with Paper by AI &rarr;</a>
+                            <a href="generate-paper.html?mode=ai" class="link-ai-paper">Fix with AI Paper &rarr;</a>
                         </div>
-                        <p class="card-desc">Topics where score was below 70% in your mock exams. Use <strong>Paper by AI</strong> to generate targeted remedy papers.</p>
+                        <p class="card-desc">Topics where score was below 70% in your mock exams. Use <strong>Generate by AI</strong> to create targeted practice papers.</p>
                         
                         <div class="weak-topics-box" id="weakTopicsContainer">
                             <!-- Populated by JS -->
                         </div>
 
                         <div class="ai-nudge">
-                            <span>🤖 <strong>AI Adaptive System:</strong> Click "Paper by AI" in the sidebar to generate custom papers focused specifically on these weak topics.</span>
+                            <span>🤖 <strong>AI Adaptive System:</strong> Click "Generate Paper → AI Mode" to create custom papers focused on your weak topics.</span>
                         </div>
                     </div>
 

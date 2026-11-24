@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saved Exam Papers & Search Repository</title>
+    <title>Saved Exam Papers & Search Repository – MockAI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,10 +30,6 @@
                     <span class="menu-icon">📄</span>
                     <span>Generate Paper</span>
                 </a>
-                <a href="paper-by-ai.html" class="menu-item">
-                    <span class="menu-icon">🤖</span>
-                    <span>Paper by AI</span>
-                </a>
                 <a href="pyq.html" class="menu-item">
                     <span class="menu-icon">📚</span>
                     <span>B.Tech PYQ Bank</span>
@@ -57,11 +53,10 @@
 
         <!-- MAIN SAVED PAPERS CONTENT -->
         <main class="main-content">
-            
             <header class="topbar">
                 <div>
-                    <h1>Saved Previous Papers & Exam Search</h1>
-                    <p>Search, review questions, verify answers, and track your ongoing assessment history</p>
+                    <h1>Saved Previous Papers &amp; Exam Search</h1>
+                    <p>Search, review questions, verify answers, and track your assessment history</p>
                 </div>
                 <div class="topbar-actions">
                     <a href="generate-paper.html" class="btn-primary-action">+ Take New Exam</a>
@@ -73,12 +68,12 @@
                 <!-- Hero Banner -->
                 <div class="saved-hero">
                     <div>
-                        <h2>Candidate Exam Archive & Diagnostic History</h2>
-                        <p>Every mock exam, AI remedial test, and custom assessment is permanently cataloged here. Search across questions, review AI explanations, and download reports for offline study.</p>
+                        <h2>Candidate Exam Archive &amp; Diagnostic History</h2>
+                        <p>Every mock exam and AI-generated assessment is permanently cataloged here. Search across questions, review explanations, and practice your weak areas.</p>
                     </div>
                 </div>
 
-                <!-- KPI Metrics Summary -->
+                <!-- KPI Metrics -->
                 <div class="saved-metrics-grid">
                     <div class="metric-box">
                         <div class="metric-icon">📑</div>
@@ -114,13 +109,13 @@
                 <div class="saved-filter-bar">
                     <div class="saved-search-wrap">
                         <span class="search-icon">🔍</span>
-                        <input type="text" id="paperSearchInput" class="saved-search-input" 
-                               placeholder="Search past papers by role, title, topic or keyword (e.g. 'React', 'DOM', 'Passed')..." 
+                        <input type="text" id="paperSearchInput" class="saved-search-input"
+                               placeholder="Search past papers by role, title, topic or keyword (e.g. 'React', 'DOM', 'Passed')..."
                                oninput="filterSavedPapers()">
                     </div>
 
                     <select id="paperRoleFilter" class="saved-select" onchange="filterSavedPapers()">
-                        <option value="all">All Roles & Tracks</option>
+                        <option value="all">All Roles &amp; Tracks</option>
                         <option value="Frontend">Frontend Developer</option>
                         <option value="Backend">Backend Developer</option>
                         <option value="Java">Java Developer</option>
@@ -131,7 +126,7 @@
                     <select id="paperStatusFilter" class="saved-select" onchange="filterSavedPapers()">
                         <option value="all">All Results</option>
                         <option value="passed">Passed Only (≥ 70%)</option>
-                        <option value="repeat">Needs Practice (< 70%)</option>
+                        <option value="repeat">Needs Practice (&lt; 70%)</option>
                     </select>
                 </div>
 
@@ -166,9 +161,9 @@
 
             <div class="modal-footer-bar">
                 <button type="button" class="btn-pyq-preview" onclick="closeReviewModal()">Close Review</button>
-                <button type="button" class="btn-pyq-download" id="reviewModalDownloadBtn">
-                    📥 Download Graded Report (.txt)
-                </button>
+                <a href="generate-paper.html?mode=ai" class="btn-pyq-view-pdf" style="text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                    🤖 Practice Weak Areas with AI
+                </a>
             </div>
         </div>
     </div>

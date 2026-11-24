@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +15,6 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static frontend files (HTML, CSS, JS)
 app.use(express.static(path.join(__dirname)));
 
-// MongoDB Connection URI (Compass standard local port)
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017';
 const DB_NAME = 'mockprep_ai_db';
 let db = null;
@@ -419,6 +419,47 @@ app.post('/api/ai/evaluate-answer', (req, res) => {
     });
 });
 
+// 9. Gemini AI Proxy Endpoint (server-side — uses key from .env or body)
+app.post('/api/ai/gemini', async (req, res) => {
+    const { prompt, apiKey } = req.body;
+    
+    // Use key from request body first (for demo), then fall back to .env
+    const key = apiKey || process.env.GEMINI_API_KEY;
+    
+    if (!key) {
+        return res.status(400).json({ success: false, message: 'No Gemini API key provided. Set GEMINI_API_KEY in .env or pass it in the request.' });
+    }
+    if (!prompt) {
+        return res.status(400).json({ success: false, message: 'prompt is required.' });
+    }
+
+    try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+                generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
+            })
+        });
+
+        if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            const errMsg = (errData.error && errData.error.message) ? errData.error.message : 'Gemini API error ' + response.status;
+            return res.status(response.status).json({ success: false, message: errMsg });
+        }
+
+        const data = await response.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        res.json({ success: true, text });
+
+    } catch (err) {
+        console.error('[Gemini] Error:', err.message);
+        res.status(500).json({ success: false, message: 'Server error calling Gemini API: ' + err.message });
+    }
+});
+
 // Default route -> index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -427,4 +468,9 @@ app.get('/', (req, res) => {
 // Start Server
 app.listen(PORT, () => {
     console.log(`⚡ PrepAI & B.Tech PYQ System running on http://localhost:${PORT}`);
+    if (process.env.GEMINI_API_KEY) {
+        console.log(`[Gemini] API key loaded from .env — AI endpoints ready.`);
+    } else {
+        console.log(`[Gemini] No GEMINI_API_KEY in .env — users must provide key via UI.`);
+    }
 });
