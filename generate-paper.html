@@ -550,12 +550,6 @@
             var topic   = document.getElementById('aiTopicInput').value.trim();
             var weakTags = Array.from(document.querySelectorAll('.weak-tag.selected-tag')).map(function(t){ return t.textContent; });
 
-            if (!apiKey) {
-                alert('Please enter your Gemini API key to use AI generation.');
-                document.getElementById('geminiApiKey').focus();
-                return;
-            }
-
             var roleMap = {
                 frontend: 'Frontend Web Development (HTML, CSS, JavaScript, React)',
                 backend: 'Backend Development (Node.js, Express, REST APIs)',
@@ -578,28 +572,61 @@
             document.getElementById('aiResultPanel').style.display = 'none';
 
             try {
-                var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey;
-                var resp = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
-                    })
-                });
+                var rawText = '';
 
-                if (!resp.ok) {
-                    var errData = await resp.json().catch(function(){ return {}; });
-                    var errMsg = (errData.error && errData.error.message) ? errData.error.message : 'API error ' + resp.status;
-                    throw new Error(errMsg);
+                // Strategy 1: Try via backend /api/ai/gemini
+                try {
+                    var serverResp = await fetch('/api/ai/gemini', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ prompt: prompt, apiKey: apiKey })
+                    });
+                    if (serverResp.ok) {
+                        var serverData = await serverResp.json();
+                        if (serverData.success && serverData.text) {
+                            rawText = serverData.text;
+                        }
+                    }
+                } catch (sErr) {
+                    console.log('Server proxy fetch skipped, attempting direct API...', sErr);
                 }
 
-                var data = await resp.json();
-                var text = data.candidates[0].content.parts[0].text;
+                // Strategy 2: If server proxy did not return text, try direct client fetch
+                if (!rawText) {
+                    if (!apiKey) {
+                        throw new Error('Please enter your Gemini API key, or ensure the server .env is configured.');
+                    }
+                    var models = ['gemini-2.5-flash', 'gemini-flash-latest'];
+                    var lastClientErr = '';
+                    for (var m = 0; m < models.length; m++) {
+                        try {
+                            var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + models[m] + ':generateContent?key=' + apiKey;
+                            var resp = await fetch(url, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    contents: [{ parts: [{ text: prompt }] }],
+                                    generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
+                                })
+                            });
+                            if (resp.ok) {
+                                var data = await resp.json();
+                                rawText = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0] ? data.candidates[0].content.parts[0].text : '';
+                                if (rawText) break;
+                            } else {
+                                var errData = await resp.json().catch(function(){ return {}; });
+                                lastClientErr = (errData.error && errData.error.message) ? errData.error.message : 'HTTP ' + resp.status;
+                            }
+                        } catch (cErr) {
+                            lastClientErr = cErr.message;
+                        }
+                    }
+                    if (!rawText) throw new Error(lastClientErr || 'Unable to generate questions from Gemini.');
+                }
 
                 // Extract JSON from response (strip markdown code fences if present)
-                var jsonMatch = text.match(/\[[\s\S]*\]/);
-                if (!jsonMatch) throw new Error('AI did not return valid JSON format. Please try again.');
+                var jsonMatch = rawText.match(/\[[\s\S]*\]/);
+                if (!jsonMatch) throw new Error('AI did not return valid JSON format. Raw output was: ' + rawText.slice(0, 100));
                 var questions = JSON.parse(jsonMatch[0]);
 
                 renderAiResults(questions, roleName, focusArea, count);
@@ -608,7 +635,7 @@
                 document.getElementById('aiLoading').style.display = 'none';
                 document.getElementById('btnGenerateAI').disabled = false;
                 var msg = err.message || 'Unknown error';
-                alert('⚠️ Gemini API Error:\n\n' + msg + '\n\nPlease check your API key and try again.');
+                alert('⚠️ Gemini AI Generation Notice:\n\n' + msg + '\n\nPlease check your API key and try again.');
             }
         }
 
@@ -667,12 +694,31 @@
             window.location.href = 'login.html';
         }
 
-        // Check if mode=ai param passed
+        // Initialize on page load
         window.addEventListener('DOMContentLoaded', function() {
             var params = new URLSearchParams(window.location.search);
             if (params.get('mode') === 'ai') {
                 selectMode('ai');
             }
+
+            // Automatically check and load configured Gemini API key from backend
+            fetch('/api/ai/config')
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data && data.configured && data.key) {
+                        var keyInput = document.getElementById('geminiApiKey');
+                        if (keyInput && !keyInput.value) {
+                            keyInput.value = data.key;
+                            var hint = document.querySelector('.api-key-hint');
+                            if (hint) {
+                                hint.innerHTML = '<span style="color:#10b981;font-weight:700;">✓ Active Gemini API key connected</span> (' + data.maskedKey + '). Ready for instant question generation.';
+                            }
+                        }
+                    }
+                })
+                .catch(function(e) {
+                    console.log('AI config check silent notice:', e);
+                });
         });
     </script>
 </body>

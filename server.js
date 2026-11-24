@@ -419,7 +419,17 @@ app.post('/api/ai/evaluate-answer', (req, res) => {
     });
 });
 
-// 9. Gemini AI Proxy Endpoint (server-side — uses key from .env or body)
+// 9. Gemini AI Config & Key Status Endpoint
+app.get('/api/ai/config', (req, res) => {
+    const key = process.env.GEMINI_API_KEY || '';
+    res.json({
+        configured: !!key,
+        maskedKey: key ? (key.slice(0, 6) + '...' + key.slice(-4)) : '',
+        key: key
+    });
+});
+
+// 10. Gemini AI Proxy Endpoint (server-side — uses key from .env or body)
 app.post('/api/ai/gemini', async (req, res) => {
     const { prompt, apiKey } = req.body;
     
@@ -433,31 +443,40 @@ app.post('/api/ai/gemini', async (req, res) => {
         return res.status(400).json({ success: false, message: 'prompt is required.' });
     }
 
-    try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }],
-                generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
-            })
-        });
+    const models = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-1.5-flash'];
+    let text = '';
+    let lastErrMsg = '';
 
-        if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            const errMsg = (errData.error && errData.error.message) ? errData.error.message : 'Gemini API error ' + response.status;
-            return res.status(response.status).json({ success: false, message: errMsg });
+    for (const model of models) {
+        try {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                if (text) break;
+            } else {
+                const errData = await response.json().catch(() => ({}));
+                lastErrMsg = (errData.error && errData.error.message) ? errData.error.message : `API error ${response.status}`;
+            }
+        } catch (err) {
+            lastErrMsg = err.message;
         }
-
-        const data = await response.json();
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        res.json({ success: true, text });
-
-    } catch (err) {
-        console.error('[Gemini] Error:', err.message);
-        res.status(500).json({ success: false, message: 'Server error calling Gemini API: ' + err.message });
     }
+
+    if (!text) {
+        return res.status(500).json({ success: false, message: lastErrMsg || 'Failed to generate content from Gemini API.' });
+    }
+
+    res.json({ success: true, text });
 });
 
 // Default route -> index.html

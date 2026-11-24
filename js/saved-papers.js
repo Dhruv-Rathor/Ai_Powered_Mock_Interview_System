@@ -1,4 +1,4 @@
-// Saved Papers & Exam History Engine with Search, Review & Download
+// Saved Papers & Exam History Engine with Search & Review
 
 document.addEventListener('DOMContentLoaded', function() {
     initSavedPapers();
