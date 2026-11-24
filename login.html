@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Personalized Mock Interview System</title>
+    <title>AI Personalized Mock Interview System - Log In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/auth.css">
 </head>
 <body>
@@ -12,30 +15,30 @@
         <!-- Left Hero -->
         <div class="hero-sidebar">
             <div class="hero-content">
-                <div class="brand-badge">⚡ AI Interview System</div>
+                <div class="brand-badge">⚡ AI Interview & PYQ System</div>
                 <h1>AI Personalized <span class="brand-accent">Mock Interview System</span></h1>
-                <p class="tagline">Personalised Mock Interview & Adaptive Evaluation Platform</p>
+                <p class="tagline">Personalised Mock Interview, B.Tech PYQ Bank & Adaptive Evaluation Platform</p>
 
                 <div class="feature-bullets">
                     <div class="bullet-item">
                         <span class="icon">🎯</span>
                         <div>
                             <strong>Role-Based Assessments</strong>
-                            <p>Targeted exams for Frontend, Backend, Java & Python</p>
+                            <p>Targeted exams for Frontend, Backend, Java, Python & Core Engineering</p>
                         </div>
                     </div>
                     <div class="bullet-item">
-                        <span class="icon">📝</span>
+                        <span class="icon">📚</span>
                         <div>
-                            <strong>Interactive MCQ Testing</strong>
-                            <p>Timed exams with instant evaluation and detailed scores</p>
+                            <strong>B.Tech Previous Year Questions (PYQ)</strong>
+                            <p>Download & search authentic placement papers for TCS, Infosys, Amazon & B.Tech core exams</p>
                         </div>
                     </div>
                     <div class="bullet-item">
                         <span class="icon">🤖</span>
                         <div>
-                            <strong>Paper by AI</strong>
-                            <p>Auto-detects weak topics and creates targeted remedial papers</p>
+                            <strong>Paper by AI & Answer Evaluation</strong>
+                            <p>Auto-detects weak topics and creates targeted remedial papers with AI insights</p>
                         </div>
                     </div>
                 </div>
@@ -50,53 +53,67 @@
         <div class="form-container">
             <div class="form-card">
                 <div class="tab-header">
-                    <button type="button" class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
-                    <button type="button" class="tab-btn" id="tabRegister" onclick="switchTab('register')">New Student</button>
+                    <button type="button" class="tab-btn active" id="tabLogin" onclick="switchTab('login')">Log In</button>
+                    <button type="button" class="tab-btn" id="tabRegister" onclick="switchTab('register')">Register Student</button>
                 </div>
 
                 <!-- LOGIN FORM -->
-                <form id="loginForm" onsubmit="handleLogin(event)">
+                <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
                     <h2>Welcome Back</h2>
-                    <p class="form-sub">Sign in to resume your interview prep</p>
+                    <p class="form-sub">Log in to resume your interview and exam prep</p>
+
+                    <div id="loginAlert" class="auth-alert hidden"></div>
 
                     <div class="input-block">
                         <label for="loginEmail">Email Address</label>
-                        <input type="email" id="loginEmail" placeholder="student@gla.ac.in" required>
+                        <input type="email" id="loginEmail" placeholder="student@gla.ac.in" required autocomplete="email">
                     </div>
 
                     <div class="input-block">
                         <label for="loginPass">Password</label>
-                        <input type="password" id="loginPass" placeholder="••••••••" required>
+                        <input type="password" id="loginPass" placeholder="••••••••" required autocomplete="current-password">
                     </div>
 
-                    <button type="submit" class="submit-btn">Sign In to Dashboard &rarr;</button>
+                    <button type="submit" class="submit-btn" id="loginSubmitBtn">Log In to Dashboard &rarr;</button>
 
                     <div class="demo-tip">
-                        <span>💡 Tip:</span> Use any email (e.g. <code>dhruv@gla.ac.in</code>) and password (&ge;6 chars).
+                        <span>💡 Tip:</span> First time? Switch to <strong>Register Student</strong> or use any demo account.
                     </div>
                 </form>
 
                 <!-- REGISTER FORM -->
-                <form id="registerForm" class="hidden" onsubmit="handleRegister(event)">
+                <form id="registerForm" class="hidden" onsubmit="handleRegister(event)" novalidate>
                     <h2>Create Profile</h2>
-                    <p class="form-sub">Register for personalised mock assessments</p>
+                    <p class="form-sub">Register for personalised mock assessments and PYQ access</p>
+
+                    <div id="registerAlert" class="auth-alert hidden"></div>
 
                     <div class="input-block">
                         <label for="regName">Full Name</label>
-                        <input type="text" id="regName" placeholder="e.g. Dhruv Sharma" required>
+                        <input type="text" id="regName" placeholder="e.g. Dhruv Sharma" required autocomplete="name" oninput="validateNameInput(this.value)">
+                        <div class="field-hint" id="nameHint">Must contain at least 2 letters. Cannot be purely numbers or a single letter.</div>
                     </div>
 
                     <div class="input-block">
                         <label for="regEmail">College Email</label>
-                        <input type="email" id="regEmail" placeholder="student@gla.ac.in" required>
+                        <input type="email" id="regEmail" placeholder="student@gla.ac.in" required autocomplete="email">
                     </div>
 
                     <div class="input-block">
                         <label for="regPass">Create Password</label>
-                        <input type="password" id="regPass" placeholder="Minimum 6 characters" required>
+                        <input type="password" id="regPass" placeholder="Min 8 chars with letter, number, symbol" required autocomplete="new-password" oninput="updatePasswordCriteria(this.value)">
+                        
+                        <!-- Real-time Password Requirements Checklist -->
+                        <div class="password-requirements" id="passReqBox">
+                            <span style="font-weight:700; color:#334155; margin-bottom:2px;">Password criteria:</span>
+                            <div class="req-item unmet" id="reqLength"><span class="req-icon">✕</span> Minimum 8 characters</div>
+                            <div class="req-item unmet" id="reqLetter"><span class="req-icon">✕</span> At least one letter (a-z, A-Z)</div>
+                            <div class="req-item unmet" id="reqNumber"><span class="req-icon">✕</span> At least one number (0-9)</div>
+                            <div class="req-item unmet" id="reqSpecial"><span class="req-icon">✕</span> At least one special symbol (!@#$%^&*...)</div>
+                        </div>
                     </div>
 
-                    <button type="submit" class="submit-btn">Continue &rarr;</button>
+                    <button type="submit" class="submit-btn" id="registerSubmitBtn">Create Account & Continue &rarr;</button>
                 </form>
             </div>
         </div>
@@ -108,13 +125,13 @@
             <div class="modal-header">
                 <span class="onboarding-step">Student Setup Questionnaire</span>
                 <h2>Tell us about your preparation</h2>
-                <p>MockPrep AI uses these answers to personalize your question papers.</p>
+                <p>MockPrep AI uses these answers to personalize your question papers & PYQ recommendations.</p>
             </div>
 
             <form id="onboardingForm" onsubmit="submitOnboarding(event)">
                 <!-- Question 1: Target Role -->
                 <div class="survey-group">
-                    <label class="survey-title">1. What primary job role are you targeting?</label>
+                    <label class="survey-title">1. What primary job role or exam are you targeting?</label>
                     <div class="option-grid">
                         <label class="radio-card">
                             <input type="radio" name="targetRole" value="frontend" checked>
@@ -126,11 +143,11 @@
                         </label>
                         <label class="radio-card">
                             <input type="radio" name="targetRole" value="java">
-                            <span>☕ Java Developer (Core/Spring)</span>
+                            <span>☕ Java Developer (Core/Spring/OOPs)</span>
                         </label>
                         <label class="radio-card">
                             <input type="radio" name="targetRole" value="python">
-                            <span>🐍 Python Developer (Basics/Django)</span>
+                            <span>🐍 Python Developer (Basics/DSA/Django)</span>
                         </label>
                     </div>
                 </div>
@@ -141,15 +158,15 @@
                     <div class="option-row">
                         <label class="radio-chip">
                             <input type="radio" name="experienceLevel" value="beginner" checked>
-                            <span>Beginner (Learning fundamentals)</span>
+                            <span>Beginner (Learning fundamentals & B.Tech basics)</span>
                         </label>
                         <label class="radio-chip">
                             <input type="radio" name="experienceLevel" value="intermediate">
-                            <span>Intermediate (Built projects)</span>
+                            <span>Intermediate (Built projects, solving DSA & PYQs)</span>
                         </label>
                         <label class="radio-chip">
                             <input type="radio" name="experienceLevel" value="advanced">
-                            <span>Advanced (Interview ready)</span>
+                            <span>Advanced (Interview ready for Top Tech/TCS/Infosys)</span>
                         </label>
                     </div>
                 </div>
@@ -160,15 +177,15 @@
                     <div class="option-row">
                         <label class="radio-chip">
                             <input type="radio" name="focusGoal" value="campus_placements" checked>
-                            <span>Campus Placements</span>
+                            <span>Campus Placements & Company PYQs</span>
                         </label>
                         <label class="radio-chip">
                             <input type="radio" name="focusGoal" value="mock_interviews">
-                            <span>Technical MCQs & Tests</span>
+                            <span>Technical MCQs & Timed Tests</span>
                         </label>
                         <label class="radio-chip">
                             <input type="radio" name="focusGoal" value="weak_topics">
-                            <span>Improving Weak Areas</span>
+                            <span>Improving Weak Areas with AI</span>
                         </label>
                     </div>
                 </div>

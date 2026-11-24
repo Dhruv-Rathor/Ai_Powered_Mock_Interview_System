@@ -197,12 +197,17 @@ function loadUserNav() {
     var raw = localStorage.getItem('prepAiActiveUser');
     if (raw) {
         var user = JSON.parse(raw);
-        document.getElementById('sideUserName').textContent = user.name || 'Student';
-        document.getElementById('sideAvatar').textContent = (user.name || 'S').charAt(0).toUpperCase();
+        var sideName = document.getElementById('sideUserName');
+        var sideAvatar = document.getElementById('sideAvatar');
+        if (sideName) sideName.textContent = user.name || 'Student';
+        if (sideAvatar) sideAvatar.textContent = (user.name || 'S').charAt(0).toUpperCase();
 
         if (user.targetRole && roleSyllabus[user.targetRole]) {
-            document.getElementById('roleSelector').value = user.targetRole;
-            onRoleChanged(user.targetRole);
+            var roleSelect = document.getElementById('roleSelector');
+            if (roleSelect) {
+                roleSelect.value = user.targetRole;
+                onRoleChanged(user.targetRole);
+            }
         }
     }
 }
@@ -215,10 +220,12 @@ function onRoleChanged(role) {
         java: 'Java Developer',
         python: 'Python Developer'
     };
-    document.getElementById('selectedRoleLabel').textContent = roleNames[role] || 'Selected Role';
+    var labelEl = document.getElementById('selectedRoleLabel');
+    if (labelEl) labelEl.textContent = roleNames[role] || 'Selected Role';
 
     // Populate role topics checkboxes
     var container = document.getElementById('roleTopicsContainer');
+    if (!container) return;
     var topics = roleSyllabus[role] || [];
     var html = '';
     topics.forEach(function(top) {
@@ -262,9 +269,7 @@ function toggleCustomTime(isCustom) {
     }
 }
 
-// -------------------------------------------------------------
 // START GENERATED MCQ EXAM
-// -------------------------------------------------------------
 function startGeneratedExam() {
     var selectedRadio = document.querySelector('input[name="examQCount"]:checked').value;
     var count = 5;
@@ -289,9 +294,10 @@ function startGeneratedExam() {
     });
     if (topicFiltered.length === 0) topicFiltered = pool;
 
-    // Generate pool to match requested count (repeat/cycle dynamically if count > available pool)
     var finalPool = [];
-    while (finalPool.length < count) {
+    var safetyLimit = 0;
+    while (finalPool.length < count && topicFiltered.length > 0 && safetyLimit < 20) {
+        safetyLimit++;
         var copy = topicFiltered.slice();
         for (var i = copy.length - 1; i > 0; i--) {
             var j = Math.floor(Math.random() * (i + 1));
@@ -309,26 +315,25 @@ function startGeneratedExam() {
     document.getElementById('resultStage').classList.add('hidden');
     document.getElementById('examStage').classList.remove('hidden');
 
-    // Setup Exam Header
     var roleNames = {
         frontend: 'Frontend Developer',
         backend: 'Backend Developer',
         java: 'Java Developer',
         python: 'Python Developer'
     };
-    // Determine duration in total seconds
+
     var durationRadio = document.querySelector('input[name="examDuration"]:checked');
-    var totalSeconds = 600; // default 10 mins
+    var totalSeconds = 600;
     var displayDurationLabel = "10 Mins";
 
     if (durationRadio) {
         if (durationRadio.value === 'custom') {
             var custVal = parseInt(document.getElementById('customTimeVal').value);
-            var unit = document.getElementById('customTimeUnit').value; // 'seconds' or 'minutes'
+            var unit = document.getElementById('customTimeUnit').value;
             if (isNaN(custVal) || custVal < 1) custVal = 30;
 
             if (unit === 'seconds') {
-                totalSeconds = Math.min(custVal, 3600); // max 1 hour in seconds
+                totalSeconds = Math.min(custVal, 3600);
                 displayDurationLabel = totalSeconds + " Secs";
             } else {
                 var safeMins = Math.min(custVal, 120);
@@ -346,48 +351,69 @@ function startGeneratedExam() {
     document.getElementById('examBannerMeta').textContent = count + ' Questions • ' + displayDurationLabel + ' Time Limit • Pass criteria: 70%';
 
     // Render MCQ Cards
-    var deckHtml = '';
-    activeExamQuestions.forEach(function(item, qIdx) {
+    var html = '';
+    activeExamQuestions.forEach(function(item, idx) {
         var optionsHtml = '';
         item.options.forEach(function(opt, optIdx) {
             optionsHtml += '<label class="option-choice">' +
-                '<input type="radio" name="q_' + qIdx + '" value="' + optIdx + '" required> ' +
+                '<input type="radio" name="q_' + idx + '" value="' + optIdx + '" required> ' +
                 '<span>' + opt + '</span>' +
             '</label>';
         });
 
-        deckHtml += '<div class="mcq-card">' +
+        html += '<div class="mcq-card">' +
             '<div class="mcq-head">' +
-                '<span class="q-index-pill">Question ' + (qIdx + 1) + ' of ' + count + '</span>' +
-                '<span class="q-topic-tag">Topic: ' + item.topic + '</span>' +
+                '<span class="q-index-pill">Question ' + (idx + 1) + ' of ' + activeExamQuestions.length + '</span>' +
+                '<span class="q-topic-tag">' + item.topic + '</span>' +
             '</div>' +
             '<div class="mcq-question">' + item.q + '</div>' +
             '<div class="options-list">' + optionsHtml + '</div>' +
         '</div>';
     });
 
-    document.getElementById('mcqDeck').innerHTML = deckHtml;
+    document.getElementById('mcqDeck').innerHTML = html;
 
-    // Start Timer with the user-selected duration
+    // Start Timer
     startExamTimer(totalSeconds);
 }
 
 function startExamTimer(seconds) {
-    if (examTimerInterval) clearInterval(examTimerInterval);
-    var remaining = seconds;
+    if (examTimerInterval) {
+        clearInterval(examTimerInterval);
+        examTimerInterval = null;
+    }
+    
+    var remaining = parseInt(seconds);
+    if (isNaN(remaining) || remaining <= 0) remaining = 600;
+    
     var clock = document.getElementById('timerClock');
+    if (!clock) return;
 
-    examTimerInterval = setInterval(function() {
-        remaining--;
+    function renderTime() {
         var mins = Math.floor(remaining / 60);
         var secs = remaining % 60;
         clock.textContent = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
 
-        if (remaining <= 0) {
-            clearInterval(examTimerInterval);
-            alert("Time's up! Automatically submitting your answers.");
-            evaluateExam(new Event('submit'));
+        if (remaining <= 10) {
+            clock.classList.add('timer-alert');
+        } else {
+            clock.classList.remove('timer-alert');
         }
+    }
+
+    renderTime();
+
+    examTimerInterval = setInterval(function() {
+        remaining--;
+        if (remaining < 0) {
+            clearInterval(examTimerInterval);
+            examTimerInterval = null;
+            clock.textContent = '00:00';
+            alert("Time's up! Submitting your answers automatically.");
+            evaluateExam(new Event('submit'));
+            return;
+        }
+        renderTime();
     }, 1000);
 }
 
@@ -399,9 +425,7 @@ function cancelExam() {
     }
 }
 
-// -------------------------------------------------------------
-// EVALUATE EXAM & SEND WEAK POINTS TO "PAPER BY AI"
-// -------------------------------------------------------------
+// EVALUATE EXAM, SAVE FULL PAPER & UPDATE WEAK POINTS
 function evaluateExam(e) {
     if (e && e.preventDefault) e.preventDefault();
     if (examTimerInterval) clearInterval(examTimerInterval);
@@ -410,28 +434,38 @@ function evaluateExam(e) {
     var correctCount = 0;
     var identifiedWeakTopics = [];
     var identifiedStrongTopics = [];
+    var answeredQuestions = [];
 
     activeExamQuestions.forEach(function(item, qIdx) {
         var selected = document.querySelector('input[name="q_' + qIdx + '"]:checked');
         var selectedVal = selected ? parseInt(selected.value) : -1;
+        var isRight = (selectedVal === item.answer);
 
-        if (selectedVal === item.answer) {
+        if (isRight) {
             correctCount++;
             if (identifiedStrongTopics.indexOf(item.topic) === -1) {
                 identifiedStrongTopics.push(item.topic);
             }
         } else {
-            // Flagged as weak point!
             if (identifiedWeakTopics.indexOf(item.topic) === -1) {
                 identifiedWeakTopics.push(item.topic);
             }
         }
+
+        answeredQuestions.push({
+            qNo: qIdx + 1,
+            topic: item.topic,
+            question: item.q,
+            options: item.options,
+            selectedOption: selectedVal,
+            correctOption: item.answer,
+            isCorrect: isRight,
+            explanation: "Correct option: " + (item.answer + 1) + ". " + item.options[item.answer]
+        });
     });
 
     var scorePct = Math.round((correctCount / total) * 100);
 
-    // Save this attempt to exam history
-    var history = JSON.parse(localStorage.getItem('prepAiExamHistory') || '[]');
     var roleNames = {
         frontend: 'Frontend Developer',
         backend: 'Backend Developer',
@@ -439,10 +473,16 @@ function evaluateExam(e) {
         python: 'Python Developer'
     };
 
+    var roleLabel = roleNames[currentSelectedRole] || 'Developer';
+    var levelLabel = currentSelectedLevel.charAt(0).toUpperCase() + currentSelectedLevel.slice(1);
+
+    // Save this attempt to exam history
+    var history = JSON.parse(localStorage.getItem('prepAiExamHistory') || '[]');
     var attemptRecord = {
-        date: new Date().toLocaleDateString(),
-        role: roleNames[currentSelectedRole] || 'Developer',
-        level: currentSelectedLevel.charAt(0).toUpperCase() + currentSelectedLevel.slice(1),
+        id: 'attempt-' + Date.now(),
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        role: roleLabel,
+        level: levelLabel,
         score: scorePct,
         total: total,
         correct: correctCount,
@@ -452,8 +492,36 @@ function evaluateExam(e) {
     history.push(attemptRecord);
     localStorage.setItem('prepAiExamHistory', JSON.stringify(history));
 
-    // CRITICAL REQUIREMENT:
-    // "according to that there weak point send to paper by ai"
+    // Save full paper to prepAiSavedPapers repository for search and review!
+    var fullSavedPaper = {
+        id: 'paper-' + Date.now(),
+        title: roleLabel + ' Assessment (' + levelLabel + ')',
+        role: roleLabel,
+        level: levelLabel,
+        topics: roleSyllabus[currentSelectedRole] || [],
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        score: scorePct,
+        totalQuestions: total,
+        correctCount: correctCount,
+        weakTopics: identifiedWeakTopics,
+        strongTopics: identifiedStrongTopics,
+        questions: answeredQuestions
+    };
+
+    var savedPapers = JSON.parse(localStorage.getItem('prepAiSavedPapers') || '[]');
+    savedPapers.unshift(fullSavedPaper);
+    localStorage.setItem('prepAiSavedPapers', JSON.stringify(savedPapers));
+
+    // Sync to backend API
+    fetch('/api/papers/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fullSavedPaper)
+    }).catch(function() {
+        console.log("Local browser storage active for saved papers");
+    });
+
+    // Update weak points in localStorage for Paper by AI
     var masterWeak = JSON.parse(localStorage.getItem('prepAiWeakTopics') || '[]');
     identifiedWeakTopics.forEach(function(wt) {
         if (masterWeak.indexOf(wt) === -1) {
@@ -478,6 +546,5 @@ function evaluateExam(e) {
         document.getElementById('weakPointsAlert').classList.add('hidden');
     }
 
-    // Scroll smoothly to results
     document.getElementById('resultStage').scrollIntoView({ behavior: 'smooth' });
 }

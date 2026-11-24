@@ -1,8 +1,7 @@
 <!--
     FILE: index.html
     PROJECT: AI Powered Personalised Mock Interview System
-    DESCRIPTION: Entry point — redirects to login or dashboard
-                 based on session status.
+    DESCRIPTION: Entry point — redirects to login or dashboard based on session status.
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -13,12 +12,11 @@
 </head>
 <body>
     <p style="text-align:center; margin-top:50px; font-family:sans-serif; color:#888;">
-        Redirecting...
+        Redirecting to PrepAI Portal...
     </p>
     <script>
-        // Simple redirect logic — check if user is logged in
-        var user = localStorage.getItem('mockprepUser');
-        if (user) {
+        var activeUser = localStorage.getItem('prepAiActiveUser') || localStorage.getItem('mockprepUser');
+        if (activeUser) {
             window.location.href = 'dashboard.html';
         } else {
             window.location.href = 'login.html';

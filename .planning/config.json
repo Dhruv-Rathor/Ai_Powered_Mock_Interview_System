@@ -1,0 +1,12 @@
+{
+  "mode": "interactive",
+  "workflow": {
+    "commit_docs": false,
+    "verify_branch": false
+  },
+  "project": {
+    "name": "ai-interview-system",
+    "target_users": "B.Tech Engineering Students",
+    "primary_language": "javascript"
+  }
+}

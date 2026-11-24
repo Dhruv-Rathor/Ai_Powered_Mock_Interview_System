@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+* { font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif !important; }
+
 :root {
     --side-bg: #0f172a;
     --side-border: #1e293b;

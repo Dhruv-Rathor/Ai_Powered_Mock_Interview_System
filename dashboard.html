@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Personalized Mock Interview System</title>
+    <title>AI Personalized Mock Interview System - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
 
     <div class="app-layout">
-        <!-- 3-MENU SIDEBAR -->
+        <!-- 5-MENU SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-brand">
                 <span class="brand-icon">⚡</span>
@@ -29,6 +32,15 @@
                     <span class="menu-icon">🤖</span>
                     <span>Paper by AI</span>
                     <span class="menu-badge" id="weakBadgeCount">0 Weak</span>
+                </a>
+                <a href="pyq.html" class="menu-item">
+                    <span class="menu-icon">📚</span>
+                    <span>B.Tech PYQ Bank</span>
+                    <span class="menu-badge" style="background:#10b981; color:#fff;">New</span>
+                </a>
+                <a href="saved-papers.html" class="menu-item">
+                    <span class="menu-icon">📂</span>
+                    <span>Saved Papers</span>
                 </a>
             </nav>
 
@@ -51,7 +63,8 @@
                     <h1>Student Performance Dashboard</h1>
                     <p>Track your assessment scores, weak points, and AI-recommended study plans</p>
                 </div>
-                <div class="topbar-actions">
+                <div class="topbar-actions" style="display:flex; gap:10px;">
+                    <a href="pyq.html" class="btn-primary-action" style="background:#10b981;">📚 Download PYQs</a>
                     <a href="generate-paper.html" class="btn-primary-action">+ Take Mock Exam</a>
                 </div>
             </header>
@@ -146,7 +159,10 @@
                 <div class="card table-card">
                     <div class="card-title">
                         <h3>📋 Recent Exam Results & Evaluation</h3>
-                        <a href="generate-paper.html" class="link-btn">Take New Exam</a>
+                        <div style="display:flex; gap:10px;">
+                            <a href="saved-papers.html" class="link-btn" style="background:#eff6ff; color:#1d4ed8;">🔍 Search Saved Papers</a>
+                            <a href="generate-paper.html" class="link-btn">Take New Exam</a>
+                        </div>
                     </div>
                     <div class="table-wrap">
                         <table class="exam-table">

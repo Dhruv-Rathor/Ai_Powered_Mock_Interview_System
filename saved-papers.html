@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Exam Papers & Search Repository</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/paper.css">
+    <link rel="stylesheet" href="css/pyq.css">
+    <link rel="stylesheet" href="css/saved-papers.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">⚡</span>
+                <span class="brand-name">Mock<strong>AI</strong></span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <span class="menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="generate-paper.html" class="menu-item">
+                    <span class="menu-icon">📄</span>
+                    <span>Generate Paper</span>
+                </a>
+                <a href="paper-by-ai.html" class="menu-item">
+                    <span class="menu-icon">🤖</span>
+                    <span>Paper by AI</span>
+                </a>
+                <a href="pyq.html" class="menu-item">
+                    <span class="menu-icon">📚</span>
+                    <span>B.Tech PYQ Bank</span>
+                    <span class="menu-badge" style="background:#10b981; color:#fff;">New</span>
+                </a>
+                <a href="saved-papers.html" class="menu-item active">
+                    <span class="menu-icon">📂</span>
+                    <span>Saved Papers</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-avatar" id="sideAvatar">S</div>
+                <div class="user-details">
+                    <strong id="sideUserName">Student</strong>
+                    <small>Candidate Portal</small>
+                </div>
+                <button type="button" class="btn-logout" onclick="logout()" title="Logout" style="background:none; border:none; cursor:pointer; font-size:1.1rem;">🚪</button>
+            </div>
+        </aside>
+
+        <!-- MAIN SAVED PAPERS CONTENT -->
+        <main class="main-content">
+            
+            <header class="topbar">
+                <div>
+                    <h1>Saved Previous Papers & Exam Search</h1>
+                    <p>Search, review questions, verify answers, and track your ongoing assessment history</p>
+                </div>
+                <div class="topbar-actions">
+                    <a href="generate-paper.html" class="btn-primary-action">+ Take New Exam</a>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+                <!-- Hero Banner -->
+                <div class="saved-hero">
+                    <div>
+                        <h2>Candidate Exam Archive & Diagnostic History</h2>
+                        <p>Every mock exam, AI remedial test, and custom assessment is permanently cataloged here. Search across questions, review AI explanations, and download reports for offline study.</p>
+                    </div>
+                </div>
+
+                <!-- KPI Metrics Summary -->
+                <div class="saved-metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-icon">📑</div>
+                        <div class="metric-info">
+                            <strong id="metricTotalPapers">0</strong>
+                            <span>Total Saved Papers</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-icon">🎯</div>
+                        <div class="metric-info">
+                            <strong id="metricAvgScore">0%</strong>
+                            <span>Average Score</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-icon">✅</div>
+                        <div class="metric-info">
+                            <strong id="metricPassedCount" style="color:#16a34a;">0</strong>
+                            <span>Passed (≥70%)</span>
+                        </div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-icon">⚠️</div>
+                        <div class="metric-info">
+                            <strong id="metricPracticeCount" style="color:#dc2626;">0</strong>
+                            <span>Needs Practice</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search & Filters -->
+                <div class="saved-filter-bar">
+                    <div class="saved-search-wrap">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" id="paperSearchInput" class="saved-search-input" 
+                               placeholder="Search past papers by role, title, topic or keyword (e.g. 'React', 'DOM', 'Passed')..." 
+                               oninput="filterSavedPapers()">
+                    </div>
+
+                    <select id="paperRoleFilter" class="saved-select" onchange="filterSavedPapers()">
+                        <option value="all">All Roles & Tracks</option>
+                        <option value="Frontend">Frontend Developer</option>
+                        <option value="Backend">Backend Developer</option>
+                        <option value="Java">Java Developer</option>
+                        <option value="Python">Python Developer</option>
+                        <option value="Weak Points">AI Remedial Sessions</option>
+                    </select>
+
+                    <select id="paperStatusFilter" class="saved-select" onchange="filterSavedPapers()">
+                        <option value="all">All Results</option>
+                        <option value="passed">Passed Only (≥ 70%)</option>
+                        <option value="repeat">Needs Practice (< 70%)</option>
+                    </select>
+                </div>
+
+                <div class="results-meta-row">
+                    <span id="savedPapersCount">Loading saved papers...</span>
+                    <span>💡 Tip: Click <strong>Review Paper Details</strong> to see every question with your answer vs correct answer.</span>
+                </div>
+
+                <!-- Saved Papers Cards Grid -->
+                <div class="saved-cards-grid" id="savedPapersContainer">
+                    <!-- Injected by js/saved-papers.js -->
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- REVIEW PAPER MODAL -->
+    <div class="modal-overlay hidden" id="reviewPaperModal">
+        <div class="modal-content-card">
+            <div class="modal-header-bar">
+                <div>
+                    <h2 id="reviewModalTitle">Paper Title</h2>
+                    <p id="reviewModalMeta">Taken date • Score • Status</p>
+                </div>
+                <button type="button" class="btn-close-modal" onclick="closeReviewModal()" title="Close">&times;</button>
+            </div>
+
+            <div class="modal-scroll-body" id="reviewQuestionsList">
+                <!-- Injected dynamically -->
+            </div>
+
+            <div class="modal-footer-bar">
+                <button type="button" class="btn-pyq-preview" onclick="closeReviewModal()">Close Review</button>
+                <button type="button" class="btn-pyq-download" id="reviewModalDownloadBtn">
+                    📥 Download Graded Report (.txt)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/saved-papers.js"></script>
+    <script>
+        function logout() {
+            localStorage.removeItem('prepAiActiveUser');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

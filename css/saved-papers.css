@@ -1,0 +1,308 @@
+/* Styles for Saved Papers Search & Review Hub */
+
+.saved-hero {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #ffffff;
+    padding: 26px 30px;
+    border-radius: 14px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.saved-hero h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.saved-hero p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    max-width: 600px;
+}
+
+/* Metric summary cards */
+.saved-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.metric-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.metric-icon {
+    font-size: 1.8rem;
+}
+
+.metric-info strong {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    display: block;
+    line-height: 1.1;
+}
+
+.metric-info span {
+    font-size: 0.78rem;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Search & Filter Bar */
+.saved-filter-bar {
+    background: #ffffff;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.saved-search-wrap {
+    flex: 2;
+    min-width: 250px;
+    position: relative;
+}
+
+.saved-search-input {
+    width: 100%;
+    padding: 11px 14px 11px 40px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.saved-search-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.saved-select {
+    flex: 1;
+    min-width: 170px;
+    padding: 11px 14px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    background: #ffffff;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Saved Cards Grid */
+.saved-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.saved-paper-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.saved-paper-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgba(0,0,0,0.08);
+    border-color: #cbd5e1;
+}
+
+.saved-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.paper-date-pill {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.paper-role-pill {
+    background: #eff6ff;
+    color: #1d4ed8;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.score-badge {
+    text-align: right;
+    padding: 6px 12px;
+    border-radius: 8px;
+    line-height: 1.1;
+}
+.score-badge strong {
+    font-size: 1.1rem;
+    display: block;
+}
+.score-badge small {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.score-passed {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    color: #15803d;
+}
+.score-repeat {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
+}
+
+.paper-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.35;
+    margin-bottom: 10px;
+}
+
+.paper-summary-meta {
+    display: flex;
+    gap: 14px;
+    font-size: 0.8rem;
+    color: #475569;
+    background: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+}
+
+.weak-tags-wrapper {
+    margin-bottom: 16px;
+    flex-grow: 1;
+}
+
+.chip-weak {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    display: inline-block;
+    margin: 2px;
+}
+
+.chip-passed {
+    background: #f0fdf4;
+    color: #166534;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.saved-card-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-review-paper {
+    flex: 2;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.btn-review-paper:hover { background: #1d4ed8; }
+
+.btn-download-record {
+    flex: 1;
+    background: #f1f5f9;
+    color: #1e293b;
+    border: 1px solid #cbd5e1;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-download-record:hover { background: #e2e8f0; }
+
+.btn-delete-paper {
+    background: transparent;
+    border: 1px solid #fecaca;
+    color: #ef4444;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.15s ease;
+}
+.btn-delete-paper:hover {
+    background: #fee2e2;
+}
+
+.empty-state-box {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 20px;
+    background: #ffffff;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+}
+.empty-state-box h3 {
+    margin: 10px 0 6px;
+    color: #1e293b;
+}
+.empty-state-box p {
+    color: #64748b;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 900px) {
+    .saved-metrics-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}

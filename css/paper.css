@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700;800&display=swap');
+
 :root {
     --side-bg: #0f172a;
     --side-border: #1e293b;
@@ -650,3 +652,161 @@ body {
 .btn-launch-exam:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45); }
 .btn-evaluate { box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35); }
 .btn-evaluate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45); }
+
+
+/* Modern Global Typography & Reset */
+* {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif !important;
+}
+
+/* Modern Pill Buttons for Question Count & Duration */
+.q-count-chips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.count-chip {
+    flex: 1;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.count-chip:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+    transform: translateY(-1px);
+}
+
+.count-chip:has(input:checked),
+.count-chip input:checked + span {
+    border-color: #2563eb;
+    background: #2563eb;
+    color: #ffffff !important;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+}
+
+.count-chip input[type="radio"] {
+    display: none; /* Hide default radio circle for clean modern pill feel */
+}
+
+/* Level Buttons */
+.level-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.lvl-btn {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.lvl-btn:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+}
+
+.lvl-btn.active {
+    border-color: #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
+/* Digital Exam Timer */
+.exam-timer-box {
+    text-align: right;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.timer-label {
+    display: block;
+    font-size: 0.72rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+}
+
+.timer-countdown {
+    font-size: 1.65rem !important;
+    font-weight: 800;
+    color: #38bdf8;
+    font-family: 'JetBrains Mono', monospace !important;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+.timer-alert {
+    color: #ef4444 !important;
+    text-shadow: 0 0 16px rgba(239, 68, 68, 0.7) !important;
+    animation: timerPulse 0.8s infinite alternate !important;
+}
+
+@keyframes timerPulse {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.06); opacity: 0.85; }
+}
+
+/* MCQ Options */
+.option-choice {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 500;
+    background: #ffffff;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.option-choice:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+    transform: translateX(4px);
+}
+
+.option-choice:has(input:checked) {
+    border-color: #2563eb;
+    background: #eff6ff;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+}
+
+.option-choice input[type="radio"] {
+    accent-color: #2563eb;
+    transform: scale(1.15);
+}
