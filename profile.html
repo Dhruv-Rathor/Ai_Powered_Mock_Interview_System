@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Profile – MockAI Interview System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/paper.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ── HERO PROFILE HEADER ── */
+        .profile-hero {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-radius: 20px;
+            padding: 36px 32px;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 28px;
+            border: 1px solid #334155;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+        }
+
+        .profile-hero-left {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar-large {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #ffffff;
+            font-size: 2.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .profile-hero-info h2 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin: 0 0 6px;
+            color: #ffffff;
+        }
+
+        .profile-hero-info p {
+            color: #94a3b8;
+            font-size: 0.92rem;
+            margin: 0 0 10px;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .badge-pill {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .badge-blue { background: rgba(37, 99, 235, 0.25); color: #60a5fa; border: 1px solid rgba(96, 165, 250, 0.3); }
+        .badge-green { background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+        .badge-purple { background: rgba(124, 58, 237, 0.25); color: #c084fc; border: 1px solid rgba(192, 132, 252, 0.3); }
+
+        .profile-hero-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit-profile {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-edit-profile:hover {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: #ffffff;
+        }
+
+        /* ── EDIT PROFILE MODAL / DRAWER ── */
+        .edit-box {
+            background: #ffffff;
+            border: 2px solid #3b82f6;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 28px;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.12);
+            display: none;
+        }
+        .edit-box h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0 0 16px;
+        }
+        .edit-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        .edit-field label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+        .edit-field input, .edit-field select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-family: inherit;
+            color: #1e293b;
+            background: #f8fafc;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .edit-field input:focus, .edit-field select:focus {
+            border-color: #2563eb;
+            background: #fff;
+        }
+
+        /* ── 2 COLUMN LAYOUT ── */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+        @media (max-width: 900px) {
+            .profile-grid { grid-template-columns: 1fr; }
+        }
+
+        .profile-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 26px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .profile-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 12px;
+        }
+        .profile-card-head h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Detail Items List */
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 0.9rem;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: #64748b; font-weight: 600; }
+        .detail-value { color: #0f172a; font-weight: 700; text-align: right; }
+
+        /* Weak Area Chips */
+        .weak-chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 18px;
+        }
+        .weak-chip {
+            background: #fef2f2;
+            border: 1.5px solid #fecaca;
+            color: #991b1b;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Mastered Topics Chips */
+        .mastered-chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 18px;
+        }
+        .mastered-chip {
+            background: #f0fdf4;
+            border: 1.5px solid #bbf7d0;
+            color: #166534;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Project Team Info Card */
+        .team-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1.5px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-top: 14px;
+        }
+        .team-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 8px;
+        }
+        .team-member {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.86rem;
+            color: #334155;
+            padding: 4px 0;
+            font-weight: 600;
+        }
+        .team-member strong { color: #0f172a; }
+    </style>
+</head>
+<body>
+
+    <div class="app-layout">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">⚡</span>
+                <span class="brand-name">Mock<strong>AI</strong></span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <span class="menu-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="generate-paper.html" class="menu-item">
+                    <span class="menu-icon">📄</span>
+                    <span>Generate Paper</span>
+                </a>
+                <a href="pyq.html" class="menu-item">
+                    <span class="menu-icon">📚</span>
+                    <span>B.Tech PYQ Bank</span>
+                </a>
+                <a href="saved-papers.html" class="menu-item">
+                    <span class="menu-icon">📂</span>
+                    <span>Saved Papers</span>
+                </a>
+                <a href="profile.html" class="menu-item active">
+                    <span class="menu-icon">👤</span>
+                    <span>My Profile</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-user" onclick="window.location.href='profile.html'" style="cursor:pointer;" title="View Candidate Profile">
+                <div class="user-avatar" id="sideAvatar">S</div>
+                <div class="user-details">
+                    <strong id="sideUserName">Student</strong>
+                    <small>View Profile &rarr;</small>
+                </div>
+                <button type="button" class="btn-logout-text" onclick="event.stopPropagation(); logout();">Sign Out</button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <h1>Candidate Profile &amp; Academic Record</h1>
+                    <p>GLA University, Mathura • Department of Computer Science &amp; Engineering</p>
+                </div>
+                <div class="topbar-actions" style="display:flex; gap:10px;">
+                    <a href="generate-paper.html" class="btn-primary-action">+ Take Mock Exam</a>
+                    <button type="button" class="btn-logout-text" style="font-size:0.85rem; padding:8px 16px;" onclick="logout()">Sign Out</button>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <div class="profile-container">
+
+                    <!-- ══ 1. PROFILE HERO BANNER ══ -->
+                    <div class="profile-hero">
+                        <div class="profile-hero-left">
+                            <div class="profile-avatar-large" id="heroAvatar">D</div>
+                            <div class="profile-hero-info">
+                                <h2 id="heroName">Dhruv Rathor</h2>
+                                <p id="heroUniversity">GLA University, Mathura • B.Tech Computer Science &amp; Engineering</p>
+                                <div class="profile-badges">
+                                    <span class="badge-pill badge-blue" id="heroTrackBadge">💻 Frontend Developer</span>
+                                    <span class="badge-pill badge-purple" id="heroLevelBadge">🎯 Beginner Level</span>
+                                    <span class="badge-pill badge-green">🎓 B.Tech Candidate</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-hero-actions">
+                            <button type="button" class="btn-edit-profile" onclick="toggleEditBox()">✏️ Edit Profile</button>
+                            <a href="generate-paper.html?mode=ai" class="btn-primary-action" style="background:#2563eb;">🚀 Launch AI Exam</a>
+                        </div>
+                    </div>
+
+                    <!-- ══ 2. EDIT PROFILE INLINE DRAWER ══ -->
+                    <div class="edit-box" id="editProfileBox">
+                        <h3>✏️ Edit Candidate Information</h3>
+                        <form id="editProfileForm" onsubmit="saveProfileChanges(event)">
+                            <div class="edit-form-grid">
+                                <div class="edit-field">
+                                    <label>Candidate Full Name</label>
+                                    <input type="text" id="inputName" required placeholder="Your full name">
+                                </div>
+                                <div class="edit-field">
+                                    <label>Email Address</label>
+                                    <input type="email" id="inputEmail" required placeholder="name@gla.ac.in">
+                                </div>
+                                <div class="edit-field">
+                                    <label>Target Technical Role</label>
+                                    <select id="inputRole">
+                                        <option value="frontend">Frontend Developer (React / Web)</option>
+                                        <option value="backend">Backend Developer (Node.js / APIs)</option>
+                                        <option value="java">Java Developer (Core / Spring / OOPs)</option>
+                                        <option value="python">Python Developer (DSA / Django)</option>
+                                    </select>
+                                </div>
+                                <div class="edit-field">
+                                    <label>Current Diagnostic Level</label>
+                                    <select id="inputLevel">
+                                        <option value="beginner">Beginner (Foundations &amp; Basics)</option>
+                                        <option value="intermediate">Intermediate (DSA &amp; Projects)</option>
+                                        <option value="advanced">Advanced (Interview Ready)</option>
+                                    </select>
+                                </div>
+                                <div class="edit-field">
+                                    <label>Daily Question Target</label>
+                                    <select id="inputDailyTarget">
+                                        <option value="10">10 Questions / Day</option>
+                                        <option value="15">15 Questions / Day</option>
+                                        <option value="20">20 Questions / Day</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; justify-content:flex-end; gap:10px;">
+                                <button type="button" class="btn-edit-profile" style="color:#475569; border-color:#cbd5e1;" onclick="toggleEditBox()">Cancel</button>
+                                <button type="submit" class="btn-primary-action" style="padding:10px 20px;">Save Profile Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ══ 3. KPI METRICS ══ -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-icon">📝</div>
+                            <div class="kpi-info">
+                                <span class="kpi-num" id="profExamsCompleted">0</span>
+                                <span class="kpi-label">Exams Completed</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">🎯</div>
+                            <div class="kpi-info">
+                                <span class="kpi-num" id="profAvgScore">--%</span>
+                                <span class="kpi-label">Average Score</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon">✅</div>
+                            <div class="kpi-info">
+                                <span class="kpi-num" id="profMasteredCount">0</span>
+                                <span class="kpi-label">Mastered Topics</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card alert-card">
+                            <div class="kpi-icon">⚠️</div>
+                            <div class="kpi-info">
+                                <span class="kpi-num" id="profWeakCount">0</span>
+                                <span class="kpi-label">Weak Topics Flagged</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ══ 4. MAIN DETAILS GRID ══ -->
+                    <div class="profile-grid">
+                        
+                        <!-- CARD A: Academic & Career Profile -->
+                        <div class="profile-card">
+                            <div>
+                                <div class="profile-card-head">
+                                    <h3>🎓 Academic &amp; Career Details</h3>
+                                    <span class="sub-pill">GLA University</span>
+                                </div>
+
+                                <div class="detail-row">
+                                    <span class="detail-label">Institution:</span>
+                                    <span class="detail-value">GLA University, Mathura</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Department:</span>
+                                    <span class="detail-value">Computer Science &amp; Engineering</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Candidate Name:</span>
+                                    <span class="detail-value" id="cardCandidateName">Dhruv Rathor</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Candidate Email:</span>
+                                    <span class="detail-value" id="cardCandidateEmail">dhruv@gla.ac.in</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Primary Career Track:</span>
+                                    <span class="detail-value" id="cardTargetRole">Frontend Developer</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Experience Tier:</span>
+                                    <span class="detail-value" id="cardExperienceLevel">Beginner</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Daily Goal:</span>
+                                    <span class="detail-value" id="cardDailyTarget">10 Questions / Day</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">AI Remediation:</span>
+                                    <span class="detail-value" style="color:#10b981;">Active &amp; Connected</span>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:20px;">
+                                <a href="generate-paper.html" class="btn-primary-action" style="display:block; text-align:center;">
+                                    📝 Take Assessment in Current Track &rarr;
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- CARD B: Weak Areas & Remediation -->
+                        <div class="profile-card">
+                            <div>
+                                <div class="profile-card-head">
+                                    <h3>⚠️ Diagnostic Weak Areas</h3>
+                                    <span class="sub-pill" style="background:#fee2e2; color:#991b1b;">AI Tracked</span>
+                                </div>
+
+                                <p style="font-size:0.875rem; color:#64748b; line-height:1.5; margin-bottom:12px;">
+                                    Topics where your score fell below 70% during previous MCQ exams. These are automatically queued for remedial practice in <strong>Generate by AI</strong>.
+                                </p>
+
+                                <div class="weak-chip-list" id="weakChipsBox">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+
+                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:20px;">
+                                <a href="generate-paper.html?mode=ai" class="btn-primary-action" style="flex:1; text-align:center; background:#2563eb;">
+                                    🤖 Practice Weak Areas with AI &rarr;
+                                </a>
+                                <button type="button" class="btn-edit-profile" style="color:#ef4444; border-color:#fca5a5;" onclick="clearWeakTopics()">
+                                    Reset Topics
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ══ 5. SECOND ROW GRID: MASTERED TOPICS + PROJECT CREDITS ══ -->
+                    <div class="profile-grid">
+                        
+                        <!-- CARD C: Mastered Topics -->
+                        <div class="profile-card">
+                            <div>
+                                <div class="profile-card-head">
+                                    <h3>💪 Mastered Technical Topics</h3>
+                                    <span class="sub-pill" style="background:#dcfce7; color:#166534;">Score &ge; 70%</span>
+                                </div>
+
+                                <p style="font-size:0.875rem; color:#64748b; line-height:1.5; margin-bottom:12px;">
+                                    Technical modules where your accuracy meets company placement cutoff standards:
+                                </p>
+
+                                <div class="mastered-chip-list" id="masteredChipsBox">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+
+                            <div style="margin-top:20px;">
+                                <a href="pyq.html" class="btn-secondary-link" style="display:block; text-align:center; padding:10px; border-radius:10px; border:1.5px solid #cbd5e1; color:#334155; font-weight:700;">
+                                    📚 Practice with Downloaded Placement PDFs &rarr;
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- CARD D: Academic Project Credits -->
+                        <div class="profile-card">
+                            <div>
+                                <div class="profile-card-head">
+                                    <h3>🏛️ Academic Project Credentials</h3>
+                                    <span class="sub-pill">CSE Evaluation</span>
+                                </div>
+
+                                <div class="detail-row">
+                                    <span class="detail-label">Project Title:</span>
+                                    <span class="detail-value" style="font-size:0.85rem;">AI Powered Personalised Mock Interview System</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">University:</span>
+                                    <span class="detail-value">GLA University, Mathura</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Course:</span>
+                                    <span class="detail-value">B.Tech Computer Science &amp; Engineering</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Project Guide:</span>
+                                    <span class="detail-value" style="color:#2563eb;">Ms. Meghana M.</span>
+                                </div>
+
+                                <div class="team-box">
+                                    <div class="team-title">👥 Project Development Team:</div>
+                                    <div class="team-member">
+                                        <span>Dhruv Rathor</span>
+                                        <strong>2415000542</strong>
+                                    </div>
+                                    <div class="team-member">
+                                        <span>Prakhar Srivastava</span>
+                                        <strong>2415001135</strong>
+                                    </div>
+                                    <div class="team-member">
+                                        <span>Sambana Chandra Shekhar</span>
+                                        <strong>2415001388</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:16px;">
+                                <a href="saved-papers.html" class="btn-res" style="display:block; text-align:center; background:#0284c7; color:#fff; border-radius:10px; padding:10px; font-weight:700;">
+                                    📂 View Saved Papers &amp; Full Repository &rarr;
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ── LOAD CANDIDATE PROFILE ─────────────────────────────────────
+        window.addEventListener('DOMContentLoaded', function() {
+            loadCandidateProfile();
+        });
+
+        function loadCandidateProfile() {
+            var rawUser = localStorage.getItem('prepAiActiveUser');
+            var user = rawUser ? JSON.parse(rawUser) : {
+                name: 'Dhruv Rathor',
+                email: 'dhruv@gla.ac.in',
+                targetRole: 'frontend',
+                experienceLevel: 'beginner',
+                dailyTarget: '10',
+                focusGoal: 'campus_placements'
+            };
+
+            // Set sidebar user indicators
+            var sideName = document.getElementById('sideUserName');
+            var sideAvatar = document.getElementById('sideAvatar');
+            if (sideName) sideName.textContent = user.name || 'Candidate';
+            if (sideAvatar) sideAvatar.textContent = (user.name || 'D').charAt(0).toUpperCase();
+
+            // Set Hero Banner
+            var heroAvatar = document.getElementById('heroAvatar');
+            if (heroAvatar) heroAvatar.textContent = (user.name || 'D').charAt(0).toUpperCase();
+
+            var heroName = document.getElementById('heroName');
+            if (heroName) heroName.textContent = user.name || 'Dhruv Rathor';
+
+            var heroTrackBadge = document.getElementById('heroTrackBadge');
+            if (heroTrackBadge) heroTrackBadge.textContent = '💻 ' + formatRoleTitle(user.targetRole);
+
+            var heroLevelBadge = document.getElementById('heroLevelBadge');
+            if (heroLevelBadge) heroLevelBadge.textContent = '🎯 ' + capitalize(user.experienceLevel || 'beginner') + ' Level';
+
+            // Set Details Card
+            var cardCandidateName = document.getElementById('cardCandidateName');
+            if (cardCandidateName) cardCandidateName.textContent = user.name || 'Dhruv Rathor';
+
+            var cardCandidateEmail = document.getElementById('cardCandidateEmail');
+            if (cardCandidateEmail) cardCandidateEmail.textContent = user.email || 'dhruv@gla.ac.in';
+
+            var cardTargetRole = document.getElementById('cardTargetRole');
+            if (cardTargetRole) cardTargetRole.textContent = formatRoleTitle(user.targetRole);
+
+            var cardExperienceLevel = document.getElementById('cardExperienceLevel');
+            if (cardExperienceLevel) cardExperienceLevel.textContent = capitalize(user.experienceLevel || 'beginner');
+
+            var cardDailyTarget = document.getElementById('cardDailyTarget');
+            if (cardDailyTarget) cardDailyTarget.textContent = (user.dailyTarget || '10') + ' Questions / Day';
+
+            // Pre-fill Edit inputs
+            document.getElementById('inputName').value = user.name || 'Dhruv Rathor';
+            document.getElementById('inputEmail').value = user.email || 'dhruv@gla.ac.in';
+            document.getElementById('inputRole').value = user.targetRole || 'frontend';
+            document.getElementById('inputLevel').value = user.experienceLevel || 'beginner';
+            document.getElementById('inputDailyTarget').value = user.dailyTarget || '10';
+
+            // Load Metrics & Topics
+            loadCandidateMetrics();
+        }
+
+        function loadCandidateMetrics() {
+            var history = JSON.parse(localStorage.getItem('prepAiExamHistory') || '[]');
+            var savedPapers = JSON.parse(localStorage.getItem('prepAiSavedPapers') || '[]');
+            var weakTopics = JSON.parse(localStorage.getItem('prepAiWeakTopics') || '[]');
+
+            // If fresh, provide demo seeds
+            if (history.length === 0 && savedPapers.length === 0) {
+                history = [
+                    { score: 60, weakTopics: ["React Virtual DOM", "Async Event Loop"], strongTopics: ["HTML5 Semantics", "CSS Flexbox"] },
+                    { score: 80, weakTopics: ["Closures in JavaScript"], strongTopics: ["Box Model", "Let vs Const"] }
+                ];
+                if (weakTopics.length === 0) {
+                    weakTopics = ["React Virtual DOM", "Async Event Loop", "Closures in JavaScript"];
+                    localStorage.setItem('prepAiWeakTopics', JSON.stringify(weakTopics));
+                }
+            }
+
+            // Total Exams
+            var totalExams = history.length;
+            document.getElementById('profExamsCompleted').textContent = totalExams;
+
+            // Average Score
+            if (totalExams > 0) {
+                var totalScore = history.reduce(function(acc, h) { return acc + (h.score || 0); }, 0);
+                var avg = Math.round(totalScore / totalExams);
+                document.getElementById('profAvgScore').textContent = avg + '%';
+            } else {
+                document.getElementById('profAvgScore').textContent = '--%';
+            }
+
+            // Weak Topics List
+            var weakBox = document.getElementById('weakChipsBox');
+            document.getElementById('profWeakCount').textContent = weakTopics.length;
+            if (weakTopics.length === 0) {
+                weakBox.innerHTML = '<span style="color:#166534; font-size:0.875rem; font-weight:600;">✨ No weak areas flagged! You scored 70%+ across all topics.</span>';
+            } else {
+                var weakHtml = '';
+                weakTopics.forEach(function(wt) {
+                    weakHtml += '<span class="weak-chip">⚠️ ' + escapeHtml(wt) + '</span>';
+                });
+                weakBox.innerHTML = weakHtml;
+            }
+
+            // Mastered Topics List
+            var strongMap = {};
+            history.forEach(function(h) {
+                if (h.strongTopics && Array.isArray(h.strongTopics)) {
+                    h.strongTopics.forEach(function(st) { strongMap[st] = true; });
+                }
+            });
+            var masteredList = Object.keys(strongMap);
+            if (masteredList.length === 0) {
+                masteredList = ["HTML5 Semantics", "CSS Flexbox", "DOM Tree Operations", "JavaScript ES6 Arrays"];
+            }
+            document.getElementById('profMasteredCount').textContent = masteredList.length;
+
+            var masteredBox = document.getElementById('masteredChipsBox');
+            var masteredHtml = '';
+            masteredList.forEach(function(st) {
+                masteredHtml += '<span class="mastered-chip">✅ ' + escapeHtml(st) + '</span>';
+            });
+            masteredBox.innerHTML = masteredHtml;
+        }
+
+        function toggleEditBox() {
+            var box = document.getElementById('editProfileBox');
+            if (box.style.display === 'block') {
+                box.style.display = 'none';
+            } else {
+                box.style.display = 'block';
+                box.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function saveProfileChanges(e) {
+            e.preventDefault();
+            var rawUser = localStorage.getItem('prepAiActiveUser');
+            var user = rawUser ? JSON.parse(rawUser) : {};
+
+            user.name = document.getElementById('inputName').value.trim();
+            user.email = document.getElementById('inputEmail').value.trim();
+            user.targetRole = document.getElementById('inputRole').value;
+            user.experienceLevel = document.getElementById('inputLevel').value;
+            user.dailyTarget = document.getElementById('inputDailyTarget').value;
+
+            localStorage.setItem('prepAiActiveUser', JSON.stringify(user));
+
+            toggleEditBox();
+            loadCandidateProfile();
+        }
+
+        function clearWeakTopics() {
+            if (confirm("Reset your detected weak topics list? You can re-diagnose weak areas anytime by taking an exam.")) {
+                localStorage.setItem('prepAiWeakTopics', JSON.stringify([]));
+                loadCandidateMetrics();
+            }
+        }
+
+        function formatRoleTitle(role) {
+            var map = {
+                frontend: 'Frontend Developer',
+                backend: 'Backend Developer',
+                java: 'Java Developer',
+                python: 'Python Developer'
+            };
+            return map[role] || (role ? capitalize(role) : 'Frontend Developer');
+        }
+
+        function capitalize(s) {
+            if (!s) return '';
+            return s.charAt(0).toUpperCase() + s.slice(1);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.toString()
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function logout() {
+            localStorage.removeItem('prepAiActiveUser');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

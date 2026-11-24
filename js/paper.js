@@ -1,4 +1,4 @@
-var currentSelectedRole = 'google';
+var currentSelectedRole = 'frontend';
 var currentSelectedLevel = 'beginner';
 var activeExamQuestions = [];
 var examTimerInterval = null;

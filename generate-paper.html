@@ -332,21 +332,24 @@
                 <a href="pyq.html" class="menu-item">
                     <span class="menu-icon">📚</span>
                     <span>B.Tech PYQ Bank</span>
-                    <span class="menu-badge" style="background:#10b981; color:#fff;">New</span>
                 </a>
                 <a href="saved-papers.html" class="menu-item">
                     <span class="menu-icon">📂</span>
                     <span>Saved Papers</span>
                 </a>
+                <a href="profile.html" class="menu-item">
+                    <span class="menu-icon">👤</span>
+                    <span>My Profile</span>
+                </a>
             </nav>
 
-            <div class="sidebar-user">
+            <div class="sidebar-user" onclick="window.location.href='profile.html'" style="cursor:pointer;" title="View Candidate Profile">
                 <div class="user-avatar" id="sideAvatar">S</div>
                 <div class="user-details">
                     <strong id="sideUserName">Student</strong>
-                    <small>Candidate Portal</small>
+                    <small>View Profile &rarr;</small>
                 </div>
-                <button type="button" class="btn-logout" onclick="logout()" title="Logout" style="background:none; border:none; cursor:pointer; font-size:1.1rem;">🚪</button>
+                <button type="button" class="btn-logout-text" onclick="event.stopPropagation(); logout();">Sign Out</button>
             </div>
         </aside>
 
@@ -355,7 +358,7 @@
             <header class="topbar">
                 <div>
                     <h1>Generate Examination Paper</h1>
-                    <p>Practice with downloaded company placement papers or generate adaptive tests with Gemini AI</p>
+                    <p>Practice with role track questions or generate adaptive tests with AI</p>
                 </div>
                 <div class="topbar-actions">
                     <a href="pyq.html" class="btn-secondary-link">📚 Browse Downloaded PYQ PDFs &rarr;</a>
@@ -371,14 +374,14 @@
                         <div class="mode-card" onclick="selectMode('pyq')" id="card-pyq">
                             <span class="mode-card-icon">📋</span>
                             <h3>Generate by PYQ</h3>
-                            <p>Practice with real questions from downloaded company placement papers (Google, Amazon, Microsoft, TCS, Infosys, Wipro) &amp; core subjects. Timed MCQ exam with scoring.</p>
+                            <p>Practice with questions organized by role track (Frontend, Backend, Java, Python). Timed interactive MCQ exam with real-time scoring.</p>
                         </div>
                         <!-- Option B: Generate by AI -->
                         <div class="mode-card" onclick="selectMode('ai')" id="card-ai">
-                            <span class="mode-badge">✨ Gemini AI</span>
+                            <span class="mode-badge">✨ AI-Powered</span>
                             <span class="mode-card-icon">🤖</span>
                             <h3>Generate by AI</h3>
-                            <p>Generate interactive MCQ tests using Gemini AI. Target your weak areas from past exams or choose any company track / topic with automated evaluation.</p>
+                            <p>Generate interactive MCQ tests using AI. Target your weak areas from past exams or choose any track / topic with automated evaluation.</p>
                         </div>
                     </div>
                 </div>
@@ -391,28 +394,18 @@
                     <div class="config-card" id="configCard">
                         <div class="card-head">
                             <h2>Configure Exam Settings</h2>
-                            <span class="sub-pill">Interactive MCQ Mode · Downloaded PYQ Bank</span>
+                            <span class="sub-pill">Interactive MCQ Mode · Role Track Bank</span>
                         </div>
 
                         <div class="form-grid">
-                            <!-- Role & Company Selection -->
+                            <!-- Role Selection -->
                             <div class="field">
-                                <label for="roleSelector">Select Placement Paper / Track</label>
+                                <label for="roleSelector">Select Role Track</label>
                                 <select id="roleSelector" class="form-control" onchange="onRoleChanged(this.value)">
-                                    <optgroup label="🏢 Downloaded Company Placement PYQs">
-                                        <option value="google" selected>Google Campus Placement Paper (2026)</option>
-                                        <option value="amazon">Amazon SDE Technical Placement (2026)</option>
-                                        <option value="microsoft">Microsoft Software Engineering OA (2026)</option>
-                                        <option value="tcs">TCS NQT &amp; Digital Placement Exam</option>
-                                        <option value="infosys">Infosys Specialist Programmer (SP) Exam</option>
-                                        <option value="wipro">Wipro Elite NLTH Placement Exam</option>
-                                    </optgroup>
-                                    <optgroup label="💻 Core Developer Tracks">
-                                        <option value="frontend">Frontend Developer (React / Web)</option>
-                                        <option value="backend">Backend Developer (Node.js / Express / APIs)</option>
-                                        <option value="java">Java Developer (Core Java / OOPs / Collections)</option>
-                                        <option value="python">Python Developer (Basics / Django / DSA)</option>
-                                    </optgroup>
+                                    <option value="frontend" selected>Frontend Developer (React / Web)</option>
+                                    <option value="backend">Backend Developer (Node.js / Express / APIs)</option>
+                                    <option value="java">Java Developer (Core Java / OOPs / Collections)</option>
+                                    <option value="python">Python Developer (Basics / Django / DSA)</option>
                                 </select>
                             </div>
 
@@ -430,7 +423,7 @@
                         <!-- Role Topics -->
                         <div class="topics-area">
                             <label class="topics-label">
-                                <span>Syllabus Modules for <strong id="selectedRoleLabel">Google Placement Paper (2026)</strong>:</span>
+                                <span>Syllabus Modules for <strong id="selectedRoleLabel">Frontend Developer</strong>:</span>
                                 <small>(Questions will be drawn according to checked modules)</small>
                             </label>
                             <div class="topics-checkboxes" id="roleTopicsContainer"></div>
@@ -489,7 +482,7 @@
                         <div class="exam-banner">
                             <div>
                                 <span class="exam-tag">Live Assessment</span>
-                                <h2 id="examBannerTitle">Google Placement Paper Assessment</h2>
+                                <h2 id="examBannerTitle">Frontend Developer Assessment</h2>
                                 <p id="examBannerMeta">5 Questions • Single Choice • Pass criteria: 70%</p>
                             </div>
                             <div class="exam-timer-box">
@@ -551,9 +544,9 @@
                         <div class="ai-panel-head">
                             <div>
                                 <h2>🤖 AI-Powered Assessment Generator</h2>
-                                <p>Custom MCQs created by Gemini AI with interactive exam evaluation and weak-area tracking</p>
+                                <p>Custom MCQs created by AI with interactive exam evaluation and weak-area tracking</p>
                             </div>
-                            <span class="ai-status-badge">⚡ Gemini AI Engine Ready</span>
+                            <span class="ai-status-badge">⚡ AI Engine Ready</span>
                         </div>
 
                         <!-- SUB-MODE SELECTOR TABS -->
@@ -641,7 +634,7 @@
                     <!-- Loading Spinner -->
                     <div class="ai-loading" id="aiLoading">
                         <div class="ai-spinner"></div>
-                        <p>Gemini AI is generating your personalized MCQ exam...</p>
+                        <p>Generating by AI...</p>
                         <small style="color:#64748b;">Creating question choices, distractors, and verified technical explanations</small>
                     </div>
 

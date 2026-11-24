@@ -31,21 +31,24 @@
                 <a href="pyq.html" class="menu-item">
                     <span class="menu-icon">📚</span>
                     <span>B.Tech PYQ Bank</span>
-                    <span class="menu-badge" style="background:#10b981; color:#fff;">New</span>
                 </a>
                 <a href="saved-papers.html" class="menu-item">
                     <span class="menu-icon">📂</span>
                     <span>Saved Papers</span>
                 </a>
+                <a href="profile.html" class="menu-item">
+                    <span class="menu-icon">👤</span>
+                    <span>My Profile</span>
+                </a>
             </nav>
 
-            <div class="sidebar-user">
+            <div class="sidebar-user" onclick="window.location.href='profile.html'" style="cursor:pointer;" title="View Candidate Profile">
                 <div class="user-avatar" id="sideAvatar">S</div>
                 <div class="user-details">
                     <strong id="sideUserName">Student</strong>
-                    <small id="sideUserRole">Frontend Developer</small>
+                    <small>View Profile &rarr;</small>
                 </div>
-                <button type="button" class="btn-logout" onclick="logout()" title="Logout">🚪</button>
+                <button type="button" class="btn-logout-text" onclick="event.stopPropagation(); logout();">Sign Out</button>
             </div>
         </aside>
 

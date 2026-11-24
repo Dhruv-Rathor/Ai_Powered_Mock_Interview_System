@@ -32,21 +32,24 @@
                 <a href="pyq.html" class="menu-item active">
                     <span class="menu-icon">📚</span>
                     <span>B.Tech PYQ Bank</span>
-                    <span class="menu-badge" style="background:#10b981; color:#fff;">New</span>
                 </a>
                 <a href="saved-papers.html" class="menu-item">
                     <span class="menu-icon">📂</span>
                     <span>Saved Papers</span>
                 </a>
+                <a href="profile.html" class="menu-item">
+                    <span class="menu-icon">👤</span>
+                    <span>My Profile</span>
+                </a>
             </nav>
 
-            <div class="sidebar-user">
+            <div class="sidebar-user" onclick="window.location.href='profile.html'" style="cursor:pointer;" title="View Candidate Profile">
                 <div class="user-avatar" id="sideAvatar">S</div>
                 <div class="user-details">
                     <strong id="sideUserName">Student</strong>
-                    <small>Candidate Portal</small>
+                    <small>View Profile &rarr;</small>
                 </div>
-                <button type="button" class="btn-logout" onclick="logout()" title="Logout" style="background:none; border:none; cursor:pointer; font-size:1.1rem;">🚪</button>
+                <button type="button" class="btn-logout-text" onclick="event.stopPropagation(); logout();">Sign Out</button>
             </div>
         </aside>
 
@@ -55,7 +58,7 @@
             <header class="topbar">
                 <div>
                     <h1>B.Tech Previous Year Questions (PYQ) Repository</h1>
-                    <p>Search and view authentic campus placement and semester exam papers</p>
+                    <p>Official downloaded placement papers for campus recruitment drives</p>
                 </div>
                 <div class="topbar-actions">
                     <a href="generate-paper.html" class="btn-secondary-link">+ Take Timed Mock Test</a>
@@ -67,90 +70,54 @@
                 <!-- PYQ Hero Banner -->
                 <div class="pyq-hero">
                     <div>
-                        <h2>Engineering Placement &amp; Semester Papers (PDF Repository)</h2>
-                        <p>Official downloaded placement papers for Google, Amazon, Microsoft, TCS, Infosys, Apple, Meta, Netflix &amp; Core B.Tech subjects. Click any paper to view the raw PDF directly in your browser.</p>
+                        <h2>Engineering Placement Papers (Official PDF Repository)</h2>
+                        <p>Authentic downloaded placement papers for Google, Amazon, Microsoft, TCS, Infosys, Apple, Meta, Netflix, Adobe, Wipro, and Cognizant. Click any paper to open the PDF directly in your browser.</p>
                     </div>
                 </div>
 
-                <!-- Search & Filters -->
+                <!-- Search & Filters (Filter by Company Only) -->
                 <div class="pyq-filter-bar">
-                    <div class="search-box-wrap">
+                    <div class="search-box-wrap" style="flex: 2; min-width: 260px;">
                         <span class="search-icon">🔍</span>
                         <input type="text" id="pyqSearchInput" class="pyq-search-input"
-                               placeholder="Search questions, subjects (e.g. 'Deadlock', 'TCS', 'SQL', 'Tree')..."
+                               placeholder="Search papers by company name, year, or keyword (e.g. 'Google', 'Amazon', 'TCS', '2026')..."
                                oninput="filterPyqs()">
                     </div>
 
-                    <select id="pyqSubjectFilter" class="filter-select" onchange="filterPyqs()">
-                        <option value="all">All Subjects &amp; Tracks</option>
-                        <option value="Company Placement">Company Campus Placements</option>
-                        <option value="Data Structures &amp; Algorithms">Data Structures &amp; Algorithms (DSA)</option>
-                        <option value="Operating Systems">Operating Systems (OS)</option>
-                        <option value="Database Management Systems">Database Systems (DBMS)</option>
-                        <option value="Computer Networks">Computer Networks (CN)</option>
-                    </select>
-
-                    <select id="pyqCompanyFilter" class="filter-select" onchange="filterPyqs()">
-                        <option value="all">All Companies / Exams</option>
-                        <option value="Google">Google (Downloaded PDF)</option>
-                        <option value="Amazon">Amazon (Downloaded PDF)</option>
-                        <option value="Microsoft">Microsoft (Downloaded PDF)</option>
-                        <option value="TCS">TCS (Tata Consultancy)</option>
+                    <select id="pyqCompanyFilter" class="filter-select" onchange="filterPyqs()" style="flex: 1; min-width: 200px;">
+                        <option value="all">All Companies</option>
+                        <option value="Google">Google</option>
+                        <option value="Amazon">Amazon</option>
+                        <option value="Microsoft">Microsoft</option>
+                        <option value="TCS">TCS</option>
                         <option value="Infosys">Infosys</option>
-                        <option value="Apple">Apple (Downloaded PDF)</option>
-                        <option value="Meta">Meta (Downloaded PDF)</option>
-                        <option value="Netflix">Netflix (Downloaded PDF)</option>
-                        <option value="Adobe">Adobe (Downloaded PDF)</option>
-                        <option value="Uber">Uber (Downloaded PDF)</option>
-                        <option value="Cisco">Cisco (Downloaded PDF)</option>
+                        <option value="Apple">Apple</option>
+                        <option value="Meta">Meta</option>
+                        <option value="Netflix">Netflix</option>
+                        <option value="Adobe">Adobe</option>
                         <option value="Wipro">Wipro</option>
                         <option value="Cognizant">Cognizant</option>
-                        <option value="Salesforce">Salesforce (Downloaded PDF)</option>
-                        <option value="Atlassian">Atlassian (Downloaded PDF)</option>
-                        <option value="LinkedIn">LinkedIn (Downloaded PDF)</option>
-                        <option value="University">University B.Tech Semester</option>
+                        <option value="Uber">Uber</option>
+                        <option value="Cisco">Cisco</option>
+                        <option value="Salesforce">Salesforce</option>
+                        <option value="Atlassian">Atlassian</option>
+                        <option value="LinkedIn">LinkedIn</option>
                     </select>
                 </div>
 
                 <div class="results-meta-row">
                     <span id="pyqResultsCount">Loading papers...</span>
-                    <span>💡 Tip: Click <strong>Open Raw PDF</strong> to view the downloaded placement PDF directly in your browser.</span>
                 </div>
 
-                <!-- PYQ Cards Grid -->
+                <!-- PYQ Cards Grid (Only Downloaded Placement PDFs) -->
                 <div class="pyq-grid" id="pyqGridContainer">
-                    <!-- Populated by js/pyq.js -->
+                    <!-- Populated dynamically by js/pyq.js -->
                 </div>
 
             </div>
         </main>
     </div>
 
-    <!-- DETAIL / SOLUTIONS MODAL -->
-    <div class="modal-overlay hidden" id="pyqDetailModal">
-        <div class="modal-content-card">
-            <div class="modal-header-bar">
-                <div>
-                    <h2 id="modalPaperTitle">Paper Title</h2>
-                    <p id="modalPaperMeta">Company • Subject • Duration</p>
-                </div>
-                <button type="button" class="btn-close-modal" onclick="closePyqModal()" title="Close">&times;</button>
-            </div>
-
-            <div class="modal-scroll-body" id="modalQuestionsList">
-                <!-- Injected dynamically -->
-            </div>
-
-            <div class="modal-footer-bar">
-                <button type="button" class="btn-pyq-preview" onclick="closePyqModal()">Close Preview</button>
-                <button type="button" class="btn-pyq-view-pdf" id="modalViewPdfBtn" onclick="openCurrentPaperAsPdf()">
-                    📄 Open as PDF View
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/pyq-data.js"></script>
     <script src="js/pyq.js"></script>
     <script>
         function logout() {
